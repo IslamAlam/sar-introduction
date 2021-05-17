@@ -2,6 +2,11 @@
 FROM kosted/maap-esa-jupyterlab:0.0.8
 ENV ENV_NAME=sar-intro \
     CONDA_DIR=/opt/conda
+
+
+# switch shell sh (default in Linux) to bash
+SHELL ["/bin/bash", "-c"]
+
 RUN  \
     # Install Jupyter Notebook, Lab, and Hub
     # Generate a notebook server config
@@ -39,76 +44,33 @@ RUN  \
     'sympy=1.7.*' \
     'vincent=0.4.*' \
     'widgetsnbextension=3.5.*'\
-    'xlrd=2.0.*'  
-    # $CONDA_DIR/bin/conda clean --all -f -y
+    'xlrd=2.0.*'  \
+    gdal  \
+    # cmake pdal python-pdal entwine
+    geopandas  \
+    rasterio  \
+    xarray  \
+    rioxarray  \
+    pyproj  \
+    cartopy  \
+    ipyleaflet  \
+    h5netcdf  \
+    netcdf4 && \
     # npm cache clean --force
     #jupyter notebook --generate-config
     # source $CONDA_DIR/bin/activate && \
-
-RUN echo ". $CONDA_DIR/etc/profile.d/conda.sh" >> ~/.bashrc && \
-    echo "conda activate base" >> ~/.bashrc
-
-# switch shell sh (default in Linux) to bash
-SHELL ["/bin/bash", "-c"]
-RUN \
-    # $CONDA_DIR/bin/conda init && \
-    source $CONDA_DIR/bin/activate && \
-    # $CONDA_DIR/bin/conda activate $ENV_NAME && \
-    echo  "$(which python)" 
-    # Cleanup - Remove all here since conda is not in path as of now
-    # find /opt/conda/ -follow -type f -name '*.a' -delete && \
-    # find /opt/conda/ -follow -type f -name '*.js.map' -delete && \
-    # $CONDA_ROOT/bin/conda clean -y --packages && \
-    # $CONDA_ROOT/bin/conda clean -y -a -f  && \
-    # $CONDA_ROOT/bin/conda build purge-all
-    # Install libraries for Geoprocessing (Geospatial, LiDAR, ) GDAL, GEOS, PDAL
-RUN \
-    source $CONDA_DIR/bin/activate && \
-    conda activate $ENV_NAME && \
-    conda install -n $ENV_NAME -y -c conda-forge gdal  \
-    # cmake pdal python-pdal entwine
-        geopandas rasterio xarray rioxarray pyproj cartopy ipyleaflet h5netcdf netcdf4 
-    # Not needed? Install cuda-toolkit (e.g. for pytorch: https://pytorch.org/): https://anaconda.org/anaconda/cudatoolkit
-    # conda install -y cudatoolkit=10.1 -c pytorch && \
-    # Install cupy: https://cupy.chainer.org/
-    # pip install --no-cache-dir cupy-cuda101
-    # Install pycuda: https://pypi.org/project/pycuda
-    # pip install --no-cache-dir pycuda
-    # Install gpu utils libs
-    # pip install --no-cache-dir gpustat py3nvml gputil
-    # Install scikit-cuda: https://scikit-cuda.readthedocs.io/en/latest/install.html
-    # pip install --no-cache-dir scikit-cuda
-    # Install tensorflow gpu
-    # TODO: tensorflow 2.3.1 installs tenorboard 2.4.0 with problems, use 2.3.0
-    # pip install --no-cache-dir tensorflow==2.3.0 && \
-    # Install ONNX GPU Runtime
-    # TODO: 1.4.x is latest with cuda 10.1 support
-    # pip install --no-cache-dir onnxruntime-gpu==1.4.0
-    # Install pytorch gpu
-    # https://pytorch.org/get-started/locally/
-    # conda install -y pytorch -c pytorch
-    # Install faiss gpu
-    # conda install -y faiss-gpu -c pytorch
-    # Update mxnet to gpu edition
-    # pip install --no-cache-dir mxnet-cu101mkl==1.6.0.post0
-    # install jax: https://github.com/google/jax#pip-installation
-    # pip install --upgrade jax jaxlib==0.1.57+cuda101 -f https://storage.googleapis.com/jax-releases/jax_releases.html 
-    # Install pygpu - Required for theano: http://deeplearning.net/software/libgpuarray/
-    # conda install -y pygpu
-    # Install lightgbm
-    # pip install lightgbm --install-option=--gpu # --install-option="--opencl-include-dir=/usr/local/cuda/include/" --install-option="--opencl-library=/usr/local/cuda/lib64/libOpenCL.so" 
-    # nvidia python ml lib
-    # pip install --upgrade --force-reinstall nvidia-ml-py3
-    # SpeedTorch: https://github.com/Santosh-Gupta/SpeedTorch
-    # pip install --no-cache-dir SpeedTorch
-    # Ipyexperiments - fix memory leaks
-    # pip install --no-cache-dir ipyexperiments
-RUN \
-    python -m ipykernel install --user --name $ENV_NAME --display-name $ENV_NAME && \
+    echo  "$(which python)" && \
+    $CONDA_DIR/envs/$ENV_NAME/bin/python -m ipykernel install --name $ENV_NAME --display-name "Python 3 ($ENV_NAME)" && \
+    $CONDA_DIR/bin/conda clean --all -f -y && \
     conda clean -y --packages && \
     conda clean -y -a -f 
 
+#RUN echo ". $CONDA_DIR/etc/profile.d/conda.sh" >> ~/.bashrc && \
+#    echo "conda activate base" >> ~/.bashrc
+
+ADD notebooks /projects/
 
 # Overwrite & add Labels
 LABEL \
-    "maintainer"="me@imansour.net" 
+    "maintainer"="me@imansour.net" \
+    "author"="Islam Mansour" 
