@@ -69,7 +69,7 @@ RUN  \
 #    echo "conda activate base" >> ~/.bashrc
 
 ADD notebooks /projects/
-
+ADD rootfs/root /root/
 # Overwrite & add Labels
 LABEL \
     "maintainer"="me@imansour.net" \

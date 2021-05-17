@@ -1,0 +1,49 @@
+metadata:
+  generateName: sar-intro-
+attributes:
+  editorFree: 'true'
+components:
+  - endpoints:
+      - name: jupyter
+        port: 3100
+        attributes:
+          type: ide
+          discoverable: 'false'
+          path: /
+          public: 'true'
+          protocol: http
+    referenceContent: |
+      kind: List
+      items:
+        - apiVersion: v1
+          kind: Pod
+          metadata:
+            name: ws
+            labels:
+              name: ws
+          spec:
+           containers: 
+            - name: jupyter
+              image: 'imansour/maap-sar-intro:0.0.7'
+              imagePullPolicy: IfNotPresent
+              mountSources: true
+              resources:
+                limits:
+                  memory: 2048Mi
+              securityContext:
+                privileged: true
+    type: kubernetes
+    volumes:
+      - name: projects
+        containerPath: /projects
+    alias: maap-jupyterlab
+    env:
+      - value: WS_JUPYTER
+        name: MACHINE_NAME
+      - value: /projects
+        name: JUPYTER_NOTEBOOK_DIR
+      - value: 97262f0b-d3ca-4492-bcf8-9a0e12bdede8
+        name: CLIENT_ID
+      - value: VAL
+        name: MAAP_ENV_TYPE
+apiVersion: 1.0.0
