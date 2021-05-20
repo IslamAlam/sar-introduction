@@ -140,7 +140,7 @@ download_files()
 	#trap 'echo -e "Aborted, error $? in command: $BASH_COMMAND"; trap ERR; return 1' ERR
 	filemanager_os="unsupported"
 	filemanager_arch="unknown"
-	install_path="/usr/local/bin"
+	main_path="/projects"
 	
 	DATA_FOLDER=/projects/data
 	mkdir -p $DATA_FOLDER
@@ -148,6 +148,11 @@ download_files()
 	
 	
 	cd /projects
+	
+	# For IPython Intro
+	if [[ ! -d $main_path/cookbook-2nd-code ]]; then
+		git clone https://github.com/ipython-books/cookbook-2nd-code.git
+	fi
 	
 	# For SAR
 	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
