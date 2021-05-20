@@ -205,3 +205,5 @@ download_files()
 
 }
 download_files
+
+echo "Made with ♥ in Munich, in case of any issue with the data and notebooks contact: Islam Mansour (polinsar@imansour.net)"
