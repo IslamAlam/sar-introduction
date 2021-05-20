@@ -147,13 +147,16 @@ download_files()
 	pip install gdown >/dev/null
 	
 	
-	cd $DATA_FOLDER
+	cd /projects
 	
 	# For SAR
 	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
+		curl -O -J https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/Exercise-03-polsar.ipynb
+		cd $DATA_FOLDER
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
 		unzip -j polsar.zip -d 03-polsar
 		rm polsar.zip
+		cd /projects
 	fi
 	
 	# For InSAR
