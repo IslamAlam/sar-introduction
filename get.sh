@@ -141,6 +141,20 @@ download_files()
 	filemanager_os="unsupported"
 	filemanager_arch="unknown"
 	install_path="/usr/local/bin"
+	
+	DATA_FOLDER=/projects/data
+	mkdir -p $DATA_FOLDER
+	pip install gdown >/dev/null
+	
+	
+	cd $DATA_FOLDER
+	
+	# For PoLSAR
+	if [[ ! -d $DATA_FOLDER/polsar ]]; then
+		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
+		unzip -j polsar.zip -d polsar
+	fi
+
 
 	# Termux on Android has $PREFIX set which already ends with /usr
 	if [[ -n "$ANDROID_ROOT" && -n "$PREFIX" ]]; then
