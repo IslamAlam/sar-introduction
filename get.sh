@@ -146,28 +146,36 @@ download_files()
 	mkdir -p $DATA_FOLDER
 	# pip install gdown >/dev/null
 	
+	cd $main_path
 	
-	cd /projects
 	
+	#########################
+	# Download IPython Book #
+	#########################
+	echo "Downloading Intro Book for IPython "Cookbook" "
 	# For IPython Intro
 	if [[ ! -d $main_path/cookbook-2nd-code ]]; then
 		git clone https://github.com/ipython-books/cookbook-2nd-code.git
 	fi
+	########################
+	# Download and extract #
+	########################
+    	#echo "Downloading File Browser for $filemanager_os/$filemanager_arch..."
+	echo "Downloading Files"
 	
 	# For SAR
 	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
 		curl -O -J https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/Exercise-03-polsar.ipynb
 		cd $DATA_FOLDER
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
-		unzip -j polsar.zip -d 03-polsar
+		unzip -j polsar.zip -d $DATA_FOLDER/03-polsar
 		rm polsar.zip
-		cd /projects
 	fi
 	
 	# For InSAR
 	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
-		unzip -j polsar.zip -d 03-polsar
+		unzip -j polsar.zip -d $DATA_FOLDER/03-polsar
 		rm polsar.zip
 	fi
 	
@@ -175,7 +183,7 @@ download_files()
 	# For PolSAR
 	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
-		unzip -j polsar.zip -d 03-polsar
+		unzip -j polsar.zip -d $DATA_FOLDER/03-polsar
 		rm polsar.zip
 	fi
 	
@@ -183,34 +191,17 @@ download_files()
 	# For Pol-InSAR
 	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
-		unzip -j polsar.zip -d 03-polsar
+		unzip -j polsar.zip -d $DATA_FOLDER/03-polsar
 		rm polsar.zip
 	fi
 
 	# For TomoSAR
 	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
-		unzip -j polsar.zip -d 03-polsar
+		unzip -j polsar.zip -d $DATA_FOLDER/03-polsar
 		rm polsar.zip
 	fi
 
-	# Termux on Android has $PREFIX set which already ends with /usr
-	if [[ -n "$ANDROID_ROOT" && -n "$PREFIX" ]]; then
-		install_path="$PREFIX/bin"
-	fi
 
-	# Fall back to /usr/bin if necessary
-	if [[ ! -d $install_path ]]; then
-		install_path="/usr/bin"
-	fi
-
-	# Not every platform has or needs sudo (https://termux.com/linux.html)
-	((EUID)) && [[ -z "$ANDROID_ROOT" ]] && sudo_cmd="sudo"
-
-	########################
-	# Download and extract #
-	########################
-    #echo "Downloading File Browser for $filemanager_os/$filemanager_arch..."
-	echo "Downloading Files"
 }
 download_files
