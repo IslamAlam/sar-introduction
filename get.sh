@@ -149,12 +149,42 @@ download_files()
 	
 	cd $DATA_FOLDER
 	
-	# For PoLSAR
-	if [[ ! -d $DATA_FOLDER/polsar ]]; then
+	# For SAR
+	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
-		unzip -j polsar.zip -d polsar
+		unzip -j polsar.zip -d 03-polsar
+		rm polsar.zip
+	fi
+	
+	# For InSAR
+	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
+		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
+		unzip -j polsar.zip -d 03-polsar
+		rm polsar.zip
+	fi
+	
+	
+	# For PolSAR
+	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
+		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
+		unzip -j polsar.zip -d 03-polsar
+		rm polsar.zip
+	fi
+	
+	
+	# For Pol-InSAR
+	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
+		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
+		unzip -j polsar.zip -d 03-polsar
+		rm polsar.zip
 	fi
 
+	# For TomoSAR
+	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
+		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
+		unzip -j polsar.zip -d 03-polsar
+		rm polsar.zip
+	fi
 
 	# Termux on Android has $PREFIX set which already ends with /usr
 	if [[ -n "$ANDROID_ROOT" && -n "$PREFIX" ]]; then
