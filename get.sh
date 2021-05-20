@@ -144,7 +144,7 @@ download_files()
 	
 	DATA_FOLDER=/projects/data
 	mkdir -p $DATA_FOLDER
-	pip install gdown >/dev/null
+	# pip install gdown >/dev/null
 	
 	
 	cd /projects
