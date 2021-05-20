@@ -207,4 +207,4 @@ download_files()
 download_files
 
 echo $'\n\n\n#######################\nMade with ❤️  in Munich! \nIn case of any issue with the data and notebooks contact: \n\tIslam Mansour (polinsar@imansour.net)'
-echo $'\n\nEnjoy your Training 🥳 😊'
+echo $'\nEnjoy your Training 🥳 😊\n'
