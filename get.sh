@@ -163,6 +163,21 @@ download_files()
     	#echo "Downloading File Browser for $filemanager_os/$filemanager_arch..."
 	echo "Downloading Files"
 	
+	# For PolSAR
+	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
+		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
+		unzip -j polsar.zip -d $DATA_FOLDER/03-polsar
+		rm polsar.zip
+	fi
+	
+	
+	# For TomoSAR
+	if [[ ! -d $DATA_FOLDER/05-tomosar ]]; then
+		gdown https://drive.google.com/uc?id=1RTX4_Q5H_64js6NzRQYFet0YStADD8Yk
+		unzip -j tomosar.zip -d $DATA_FOLDER/05-tomosar
+		rm tomosar.zip
+	fi
+	
 	# For SAR
 	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
 		curl -O -J https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/Exercise-03-polsar.ipynb
@@ -179,23 +194,7 @@ download_files()
 		rm polsar.zip
 	fi
 	
-	
-	# For PolSAR
-	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
-		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
-		unzip -j polsar.zip -d $DATA_FOLDER/03-polsar
-		rm polsar.zip
-	fi
-	
-	
 	# For Pol-InSAR
-	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
-		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
-		unzip -j polsar.zip -d $DATA_FOLDER/03-polsar
-		rm polsar.zip
-	fi
-
-	# For TomoSAR
 	if [[ ! -d $DATA_FOLDER/03-polsar ]]; then
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
 		unzip -j polsar.zip -d $DATA_FOLDER/03-polsar
