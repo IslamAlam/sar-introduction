@@ -171,9 +171,9 @@ download_files()
 		rm polsar.zip
 	fi
 	
-	
+	return 1
 	# For TomoSAR
-	if [[ ! -d $DATA_FOLDER/03-tomosar ]]; then
+	if [[ ! -d $DATA_FOLDER/05-tomosar ]]; then
 		gdown https://drive.google.com/uc?id=1RTX4_Q5H_64js6NzRQYFet0YStADD8Yk
 		unzip -j tomosar.zip -d $DATA_FOLDER/05-tomosar
 		rm tomosar.zip
