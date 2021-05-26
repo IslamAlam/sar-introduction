@@ -4,12 +4,13 @@ The tutorial can be deployed to a local computer using the docker image availabl
 
 Docker Hub: [Image](https://hub.docker.com/repository/docker/imansour/maap-sar-intro/tags?page=1&ordering=last_updated)
 
+## To Deploy the training locally
 
-#### To Start the container (open the browser):
-To open Jupyter lab open the browser [http://localhost:3100](http://localhost:3100)
+#### To Start the container:
 
     $ docker run -d -p 3100:3100 --name=dlr-sar-intro -v "$(pwd)"/data:/projects imansour/maap-sar-intro:latest
-    
+To open Jupyter lab open the browser [http://localhost:3100](http://localhost:3100)
+
 #### To Stop the container: 
     $ docker container stop dlr-sar-intro
     
