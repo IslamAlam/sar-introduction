@@ -4,7 +4,7 @@ The tutorial can be deployed to a local computer using the docker image availabl
 
 Docker Hub: [Image](https://hub.docker.com/repository/docker/imansour/maap-sar-intro/tags?page=1&ordering=last_updated)
 
-## To Deploy the training locally
+## To deploy the training locally
 
 #### To Start the container:
 
