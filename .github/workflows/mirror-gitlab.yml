@@ -11,7 +11,7 @@ jobs:
       uses: SvanBoxel/gitlab-mirror-and-ci-action@master
       with:
         args: https://gitlab.dlr.de/hr-rko-ir-pol-insar/sar-introduction/dlr-esa-sar-intro-course.git
-        // "https://gitlab.com/<namespace>/<repository>"
+        # // "https://gitlab.com/<namespace>/<repository>"
       env:
         GITLAB_HOSTNAME: "gitlab.dlr.de"
         GITLAB_USERNAME: ${{ secrets.GITLAB_USERNAME }}
