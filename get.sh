@@ -14,7 +14,10 @@
 #   	$ wget -qO- https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/get.sh | bash
 #   
 #
-
+wget_file()
+{
+	wget -P $1 $2 2>&1 >/dev/null
+}
 
 download_files()
 {
@@ -33,9 +36,10 @@ download_files()
 	#########################
 	# Download IPython Book #
 	#########################
-	echo "Downloading Intro Book for IPython "Cookbook" "
+	
 	# For IPython Intro
 	if [[ ! -d $main_path/cookbook-2nd-code ]]; then
+		echo "Downloading Intro Book for IPython "Cookbook" "
 		git clone https://github.com/ipython-books/cookbook-2nd-code.git
 	fi
 	########################
@@ -45,9 +49,10 @@ download_files()
 	echo "Downloading Files"
 	
 	# For src
-	if [[ ! -d $main_path/src ]]; then
-		curl -O -J https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py 2>&1 >/dev/null
-	fi
+	# if [[ ! -d $main_path/src ]]; then
+	# 	wget -P ./src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py 2>&1 >/dev/null
+	# fi
+	wget_file ./src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py
 
 	# For SAR
 	if [[ ! -d $DATA_FOLDER/01-sar ]]; then
