@@ -16,7 +16,12 @@
 #
 wget_file()
 {
-	wget -P $1 $2 2>&1 >/dev/null
+	wget -nc -q -P $1 $2 2>&1 >/dev/null
+}
+
+wget_file_override()
+{
+	wget -q -P $1 $2 2>&1 >/dev/null
 }
 
 download_files()
@@ -48,26 +53,17 @@ download_files()
     	#echo "Downloading File Browser for $filemanager_os/$filemanager_arch..."
 	echo "Downloading Files"
 	
-	# For src
-	# if [[ ! -d $main_path/src ]]; then
-	# 	wget -P ./src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py 2>&1 >/dev/null
-	# fi
-	wget_file ./src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py
-
-	# For SAR
-	if [[ ! -d $DATA_FOLDER/01-sar ]]; then
-		curl -O -J https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_05_31_Lecture_1.1.ipynb
-		curl -O -J https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_05_31_Lecture_1.2.ipynb
-
-		mkdir -p $DATA_FOLDER/01-sar
-		cd $DATA_FOLDER/01-sar
-		curl -O -J https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal1_rc.npy
-		curl -O -J https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal2_rc.npy
-
-		# gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
-		# unzip -j polsar.zip -d $DATA_FOLDER/03-polsar
-		cd $main_path
-	fi
+	# For src ste_io
+	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py
+	
+	# For SAR notebooks
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_05_31_Lecture_1.1.ipynb
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_05_31_Lecture_1.2.ipynb
+	
+	# For SAR DATA_FOLDER
+	mkdir -p $DATA_FOLDER/01-sar
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal1_rc.npy
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal2_rc.npy
 
 
 	# For PolSAR
