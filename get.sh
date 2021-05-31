@@ -44,6 +44,10 @@ download_files()
     	#echo "Downloading File Browser for $filemanager_os/$filemanager_arch..."
 	echo "Downloading Files"
 	
+	# For src
+	if [[ ! -d $main_path/src ]]; then
+		curl -O -J https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py 2>&1 >/dev/null
+	fi
 
 	# For SAR
 	if [[ ! -d $DATA_FOLDER/01-sar ]]; then
