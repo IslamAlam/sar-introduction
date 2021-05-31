@@ -65,7 +65,7 @@ download_files()
 	if [[ ! -d $DATA_FOLDER/02-polsar ]]; then
 		curl -O -J https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/Exercise-02-polsar.ipynb
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
-		unzip -j polsar.zip -d $DATA_FOLDER/03-polsar
+		unzip -j polsar.zip -d $DATA_FOLDER/02-polsar
 		rm polsar.zip
 	fi
 
