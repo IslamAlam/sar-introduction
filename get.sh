@@ -19,6 +19,19 @@ wget_file()
 	wget -nc -q -P $1 $2 2>&1 >/dev/null
 }
 
+gdown_file()
+{
+	# cd 
+	gdown https://drive.google.com/uc?id=$2 -O $1 2>&1 >/dev/null
+}
+
+gdown_file_override()
+{
+	# cd 
+	rm $1 2> /dev/null || true
+	gdown https://drive.google.com/uc?id=$2 -O $1 2>&1 >/dev/null
+}
+
 wget_file_override()
 {
 	wget -q -P $1 $2 2>&1 >/dev/null
@@ -64,6 +77,9 @@ download_files()
 	mkdir -p $DATA_FOLDER/01-sar
 	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal1_rc.npy
 	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal2_rc.npy
+
+	# Raw data SAR
+	gdown_file_override $DATA_FOLDER/01-sar/raw-img.rat 1Fue1i8IxZC3tKbg-Ax9q8B413Ggm832n
 
 	# For Reading RAT Files
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/00-read-rat-file.ipynb
