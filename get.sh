@@ -96,6 +96,7 @@ download_files()
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/00-read-rat-file.ipynb
 
 	# For PolSAR
+	rm -r $DATA_FOLDER/02-polsar
 	if [[ ! -d $DATA_FOLDER/02-polsar ]]; then
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
 		unzip -j polsar.zip -d $DATA_FOLDER/02-polsar
@@ -130,5 +131,5 @@ download_files()
 }
 download_files
 
-echo $'\n\n\n#######################\nMade with ❤️  in Munich! \nIn case of any issue with the data and notebooks contact: \n\tIslam Mansour (polinsar@imansour.net)'
+echo $'\n\n\n#######################\nMade with ❤️  in Munich! \nIn case of any issue with the data and notebooks contact: \n\t polinsar@imansour.net'
 echo $'\nEnjoy your Training 🥳 😊\n'
