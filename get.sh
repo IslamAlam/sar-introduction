@@ -95,13 +95,15 @@ download_files()
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_06_14_Lecture_3.1.ipynb
 
 	# Raw data SAR
-	gdown_file_override $DATA_FOLDER/01-sar/raw-img.rat 1Fue1i8IxZC3tKbg-Ax9q8B413Ggm832n
+	gdown_file $DATA_FOLDER/01-sar/raw-img.rat 1Fue1i8IxZC3tKbg-Ax9q8B413Ggm832n
 
 	# For Reading RAT Files
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/00-read-rat-file.ipynb
 
 	# For PolSAR
 	if [[ -f $DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat ]]; then
+		echo "$DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat: Old dataset exists."
+		echo "Remove old dir and download new dataset"
 		rm -r $DATA_FOLDER/02-polsar
 	fi
 	if [[ ! -d $DATA_FOLDER/02-polsar ]]; then
