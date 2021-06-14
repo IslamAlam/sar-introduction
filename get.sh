@@ -101,7 +101,7 @@ download_files()
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/00-read-rat-file.ipynb
 
 	# For PolSAR
-	if [[ ! -f $DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat ]]; then
+	if [[ -f $DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat ]]; then
 		rm -r $DATA_FOLDER/02-polsar
 	fi
 	if [[ ! -d $DATA_FOLDER/02-polsar ]]; then
