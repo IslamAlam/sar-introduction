@@ -91,6 +91,8 @@ download_files()
 	# For SAR 2nd week Solution
 	wget_file $main_path/notebook-solution https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebook-solution/2021_06_07_Lecture_2.2_update.ipynb
 
+	# For PolSAR 3rd Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_06_14_Lecture_3.1.ipynb
 
 	# Raw data SAR
 	gdown_file_override $DATA_FOLDER/01-sar/raw-img.rat 1Fue1i8IxZC3tKbg-Ax9q8B413Ggm832n
@@ -99,7 +101,9 @@ download_files()
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/00-read-rat-file.ipynb
 
 	# For PolSAR
-	rm -r $DATA_FOLDER/02-polsar
+	if [[ ! -f $DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat ]]; then
+		rm -r $DATA_FOLDER/02-polsar
+	fi
 	if [[ ! -d $DATA_FOLDER/02-polsar ]]; then
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
 		unzip -j polsar.zip -d $DATA_FOLDER/02-polsar
