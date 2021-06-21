@@ -110,10 +110,14 @@ download_files()
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/00-read-rat-file.ipynb
 
 	# For PolSAR
-	if [[ -f $DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat ]]; then
-		echo "$DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat: Old dataset exists."
-		echo "Remove old dir and download new dataset"
-		rm -r $DATA_FOLDER/02-polsar
+	if [[ ! -f $DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat ]]; then
+		echo "Downloading P-Band into: $DATA_FOLDER/02-polsar/"
+		# echo "Remove old dir and download new dataset"
+		# rm -r $DATA_FOLDER/02-polsar
+		gdown_file $DATA_FOLDER 1nWkhr0tg3G69kiPzGI5YLIuAVT28r8BI
+
+		unzip -j $DATA_FOLDER/polsar-P-band.zip -d $DATA_FOLDER/02-polsar
+		rm $DATA_FOLDER/polsar-P-band.zip
 	fi
 	if [[ ! -d $DATA_FOLDER/02-polsar ]]; then
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
