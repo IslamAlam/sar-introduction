@@ -99,6 +99,10 @@ download_files()
 	# For PolSAR 4th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_06_21_Lecture_4.1.ipynb
 
+	# For InSAR 5th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_06_28_Lecture_5.ipynb
+
+
 	# Slides
 	wget_file $main_path/slides https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/lectures/MAAP-KP-2021-01-SARIntro-Part1.pdf
 	wget_file $main_path/slides https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/lectures/MAAP-KP-2021-02-SARIntro-Part2.pdf
@@ -126,6 +130,16 @@ download_files()
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
 		unzip -j polsar.zip -d $DATA_FOLDER/02-polsar
 		rm polsar.zip
+	fi
+
+	# Data for 5th Week
+	if [[ ! -d $DATA_FOLDER/03-insar ]]; then
+		mkdir -p $DATA_FOLDER/03-insar
+		cd $DATA_FOLDER/03-insar
+		gdown https://drive.google.com/uc?id=1OAf1obJRRld6fS_K5JDJGu5AjGMyVuaa
+		gdown https://drive.google.com/uc?id=1rZUxpjE04m3XHXTLCJHxxFgsUt9NW1If
+		cd $main_path
+
 	fi
 
 	return 1
