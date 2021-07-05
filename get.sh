@@ -102,6 +102,8 @@ download_files()
 	# For InSAR 5th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_06_28_Lecture_5.ipynb
 
+	# For InSAR 6th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_07_05_Lecture_6.ipynb
 
 	# Slides
 	wget_file $main_path/slides https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/lectures/MAAP-KP-2021-01-SARIntro-Part1.pdf
@@ -141,6 +143,17 @@ download_files()
 		cd $main_path
 
 	fi
+
+	# Data for 6th Week
+	if [[ ! -f $DATA_FOLDER/03-insar/flat_earth_Mondah_S_2015_11_11_cut.rat ]]; then
+		mkdir -p $DATA_FOLDER/03-insar
+		cd $DATA_FOLDER/03-insar
+		# gdown https://drive.google.com/uc?id=
+		gdown https://drive.google.com/uc?id=1rBg6AwSUYUrnyXI-I0r6ZyAwJg5K52ua
+		gdown https://drive.google.com/uc?id=1gUvBLOFCu9Ctw5cYqOruZPXtKoMovJqW
+		gdown https://drive.google.com/uc?id=1khRB9MA1__x1nudr4kqt1vgZKEvb5Wu_
+	fi
+
 
 	return 1
 	# For TomoSAR
