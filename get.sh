@@ -153,8 +153,9 @@ download_files()
 		gdown https://drive.google.com/uc?id=1gUvBLOFCu9Ctw5cYqOruZPXtKoMovJqW
 		gdown https://drive.google.com/uc?id=1khRB9MA1__x1nudr4kqt1vgZKEvb5Wu_
 	fi
-
-
+ 
+	rm -r /projects/.Trash-0/* > /dev/null 2>&1
+	rm -r /tmp/* > /dev/null 2>&1
 	return 1
 	# For TomoSAR
 	if [[ ! -d $DATA_FOLDER/05-tomosar ]]; then
