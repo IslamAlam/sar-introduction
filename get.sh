@@ -153,6 +153,13 @@ download_files()
 		gdown https://drive.google.com/uc?id=1gUvBLOFCu9Ctw5cYqOruZPXtKoMovJqW
 		gdown https://drive.google.com/uc?id=1khRB9MA1__x1nudr4kqt1vgZKEvb5Wu_
 	fi
+
+	if [[ ! -f $DATA_FOLDER/03-insar/RH100_Mondah_S_2015_11_11_cut.rat ]]; then
+		mkdir -p $DATA_FOLDER/03-insar
+		cd $DATA_FOLDER/03-insar
+		gdown https://drive.google.com/uc?id=1T1tTWRR_zPhj9JZxKnLTZvp43ocqsJGW
+
+	fi
  
 	rm -r /projects/.Trash-0/* > /dev/null 2>&1
 	rm -r /tmp/* > /dev/null 2>&1
