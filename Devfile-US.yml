@@ -1,7 +1,5 @@
 metadata:
   generateName: sar-intro-us-
-attributes:
-  editorFree: 'true'
 components:
   - endpoints:
       - name: jupyter
@@ -28,6 +26,8 @@ components:
               imagePullPolicy: IfNotPresent
               mountSources: true
               resources:
+                requests:
+                  memory: 5000Mi
                 limits:
                   memory: 10240Mi
               securityContext:
@@ -46,4 +46,7 @@ components:
         name: CLIENT_ID
       - value: VAL
         name: MAAP_ENV_TYPE
+attributes:
+  editorFree: 'true'
+  persistVolumes: 'true'
 apiVersion: 1.0.0
