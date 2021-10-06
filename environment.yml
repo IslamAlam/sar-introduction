@@ -1,5 +1,4 @@
 name: sar-intro
-# tensorflow.org/install/source#gpu
 channels:
   - conda-forge
   - anaconda
