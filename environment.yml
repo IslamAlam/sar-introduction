@@ -36,11 +36,11 @@ dependencies:
   - 'statsmodels=0.12.*'
   - 'sympy=1.7.*'
   - 'vincent=0.4.*'
-  - 'widgetsnbextension=3.5.*'\
-    'xlrd=1.2.*'
+  - 'widgetsnbextension=3.5.*'
+  - 'xlrd=1.2.*'
   - gdal 
   - # cmake pdal python-pdal entwine
-    geopandas 
+  - geopandas 
   - rasterio 
   - xarray 
   - rioxarray 
