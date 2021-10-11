@@ -282,7 +282,7 @@ download_us_files()
 		unzip -j polsar-P-band.zip -d $DATA_FOLDER/02-polsar
 		rm polsar-P-band.zip
 	fi
-	if [[ ! -d $DATA_FOLDER/02-polsar ]]; then
+	if [[ ! -f $DATA_FOLDER/02-polsar/slc_16afrisr0107_Lhh_tcal_test.rat ]]; then
 		gdown https://drive.google.com/uc?id=1-DRvyHlPUh0Z1C2246I12O45hO47TXnm
 		unzip -j polsar.zip -d $DATA_FOLDER/02-polsar
 		rm polsar.zip
