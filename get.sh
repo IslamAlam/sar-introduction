@@ -287,7 +287,7 @@ download_us_files()
 		unzip -j polsar.zip -d $DATA_FOLDER/02-polsar
 		rm polsar.zip
 	fi
-	return 1
+	
 	# Data for 5th Week
 	if [[ ! -d $DATA_FOLDER/03-insar ]]; then
 		mkdir -p $DATA_FOLDER/03-insar
@@ -297,6 +297,7 @@ download_us_files()
 		cd $main_path
 
 	fi
+	return 1
 
 	# Data for 6th Week
 	if [[ ! -f $DATA_FOLDER/03-insar/flat_earth_Mondah_S_2015_11_11_cut.rat ]]; then
