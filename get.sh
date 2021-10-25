@@ -254,7 +254,7 @@ download_us_files()
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks-us/2021_10_18_MAAP_PolInSAR_PolSAR_Part2.ipynb
 
 	# For InSAR 5th Week
-	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_06_28_Lecture_5.ipynb
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks-us/2021_10_25_MAAP_PolInSAR_InSAR_Part1.ipynb
 
 	# For InSAR 6th Week
 	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_07_05_Lecture_6.ipynb
