@@ -297,7 +297,7 @@ download_us_files()
 		cd $main_path
 
 	fi
-	return 1
+	
 
 	# Data for 6th Week
 	if [[ ! -f $DATA_FOLDER/03-insar/flat_earth_Mondah_S_2015_11_11_cut.rat ]]; then
@@ -315,10 +315,11 @@ download_us_files()
 		gdown https://drive.google.com/uc?id=1T1tTWRR_zPhj9JZxKnLTZvp43ocqsJGW
 
 	fi
- 
+	
+	
 	rm -r /projects/.Trash-0/* > /dev/null 2>&1
 	rm -r /tmp/* > /dev/null 2>&1
-	
+	return 1
 	# For TomoSAR
 	if [[ ! -d $DATA_FOLDER/05-tomosar ]]; then
 		gdown https://drive.google.com/uc?id=1RTX4_Q5H_64js6NzRQYFet0YStADD8Yk
