@@ -321,28 +321,69 @@ download_us_files()
 	if [[ ! -f $DATA_FOLDER/04-polinsar/slc_15tmpsar0302_Lhh_t01.rat ]]; then
 		
 		mkdir -p $DATA_FOLDER/04-polinsar
-		cd $DATA_FOLDER/04-polinsar
+		# cd $DATA_FOLDER/04-polinsar
 		# gdown https://drive.google.com/uc?id=1muO7YkEpwN0JOlzXq4qk3byLQBQj2vgh
 		# incidence_15tmpsar0302_L_t01.rat
-		gdown https://drive.google.com/uc?id=1pC6Q10QSrN1NtSKq-WSRSPhanAFUupbU
-		# kz_2d_demc_15tmpsar0302_15tmpsar0303_t01.rat
-		gdown https://drive.google.com/uc?id=1DyPFk11Py2dbfZuBXLJF4q0cow7Itup5
-		gdown https://drive.google.com/uc?id=1O9sKsXMmnB3NOxZTZLj_6EckXlypNYLb
-		gdown https://drive.google.com/uc?id=1r0b3w8xoDuLp7JyIAHwECeuahLRUvW2L
-		gdown https://drive.google.com/uc?id=12SbjmOLZdr_JuPlMRZ0iJvgGnPiOGpHK
-		gdown https://drive.google.com/uc?id=1Cizvg32T0VTaEz3pHKn7hOrvEKdZEEMr
-		gdown https://drive.google.com/uc?id=1h_NUJ6wosAX8aYRVjAllSMwPA84J1mjt
-		gdown https://drive.google.com/uc?id=1WCtsS6kNw4H364s9fpEgyS6l1-l3mKPx
-		gdown https://drive.google.com/uc?id=1VUnYTiq2qzsCXcYJfvJt9eH7tAO6UAHl
-		gdown https://drive.google.com/uc?id=1oQVtUc5w1PsAhNRtlakjGLok3rz0K9WT
-		gdown https://drive.google.com/uc?id=1TRbuwkO7Pzm_lYFIXNS1uyZusD4ks4f1
-		gdown https://drive.google.com/uc?id=18Kx8gbpB9BM5dsrxjuZsH2G0l7WmznrL
-		gdown https://drive.google.com/uc?id=15h0NhqVP_bFRSUJfQfL3y1VtH4WmuVZE
+		# gdown https://drive.google.com/uc?id=1pC6Q10QSrN1NtSKq-WSRSPhanAFUupbU
+		# # kz_2d_demc_15tmpsar0302_15tmpsar0303_t01.rat
+		# gdown https://drive.google.com/uc?id=1DyPFk11Py2dbfZuBXLJF4q0cow7Itup5
+		# gdown https://drive.google.com/uc?id=1O9sKsXMmnB3NOxZTZLj_6EckXlypNYLb
+		# gdown https://drive.google.com/uc?id=1r0b3w8xoDuLp7JyIAHwECeuahLRUvW2L
+		# gdown https://drive.google.com/uc?id=12SbjmOLZdr_JuPlMRZ0iJvgGnPiOGpHK
+		# gdown https://drive.google.com/uc?id=1Cizvg32T0VTaEz3pHKn7hOrvEKdZEEMr
+		# gdown https://drive.google.com/uc?id=1h_NUJ6wosAX8aYRVjAllSMwPA84J1mjt
+		# gdown https://drive.google.com/uc?id=1WCtsS6kNw4H364s9fpEgyS6l1-l3mKPx
+		# gdown https://drive.google.com/uc?id=1VUnYTiq2qzsCXcYJfvJt9eH7tAO6UAHl
+		# gdown https://drive.google.com/uc?id=1oQVtUc5w1PsAhNRtlakjGLok3rz0K9WT
+		# gdown https://drive.google.com/uc?id=1TRbuwkO7Pzm_lYFIXNS1uyZusD4ks4f1
+		# gdown https://drive.google.com/uc?id=18Kx8gbpB9BM5dsrxjuZsH2G0l7WmznrL
+		# gdown https://drive.google.com/uc?id=15h0NhqVP_bFRSUJfQfL3y1VtH4WmuVZE
+		
+
+		myFiles=(
+			"incidence_15tmpsar0302_L_t01.rat"
+			"kz_2d_demc_15tmpsar0302_15tmpsar0303_t01.rat"
+			"Lida_r1503.rat"
+			"local_slope_15tmpsar0302_L_t01.rat"
+			"pha_flat_15tmpsar0302_15tmpsar0303_Lhh_t01.rat"
+			"slc_15tmpsar0302_Lhh_t01.rat"
+			"slc_15tmpsar0302_Lhv_t01.rat"
+			"slc_15tmpsar0302_Lvh_t01.rat"
+			"slc_15tmpsar0302_Lvv_t01.rat"
+			"slc_coreg_15tmpsar0302_15tmpsar0303_Lhh_t01.rat"
+			"slc_coreg_15tmpsar0302_15tmpsar0303_Lhv_t01.rat"
+			"slc_coreg_15tmpsar0302_15tmpsar0303_Lvh_t01.rat"
+			"slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat"
+			)
+		for file in ${myFiles[@]}; do
+			echo $file
+		    if [[ ! -f $DATA_FOLDER/04-polinsar/$file ]]; then
+				wget -O $DATA_FOLDER/04-polinsar/$file --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$file
+			fi
+		  # wget -O $DATA_FOLDER/04-polinsar/$file --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$file
+		done
+		# wget -O $FILENAME --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$FILENAME
+		# wget -O $FILENAME --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$FILENAME
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
+		# wget --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat
 		
 		# unzip -j polinsar.zip -d $DATA_FOLDER/04-polinsar
 		# rm polsar.zip
 		cd $main_path
 	fi
+	
 	rm -r /projects/.Trash-0/* > /dev/null 2>&1
 	rm -r /tmp/* > /dev/null 2>&1
 	return 1
