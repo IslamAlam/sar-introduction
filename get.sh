@@ -318,7 +318,7 @@ download_us_files()
 	
 	# Data for 7th Week
 	# 1353JDM7NfTxloUdoEVi3jg92SKfS8y3Q
-	if [[ ! -f $DATA_FOLDER/04-polinsar/slc_15tmpsar0302_Lhh_t01.rat ]]; then
+	# if [[ ! -f $DATA_FOLDER/04-polinsar/slc_15tmpsar0302_Lhh_t01.rat ]]; then
 		
 		mkdir -p $DATA_FOLDER/04-polinsar
 		# cd $DATA_FOLDER/04-polinsar
@@ -340,7 +340,7 @@ download_us_files()
 		# gdown https://drive.google.com/uc?id=15h0NhqVP_bFRSUJfQfL3y1VtH4WmuVZE
 		
 
-		myFiles=(
+        myFiles=(
 			"incidence_15tmpsar0302_L_t01.rat"
 			"kz_2d_demc_15tmpsar0302_15tmpsar0303_t01.rat"
 			"Lida_r1503.rat"
@@ -355,12 +355,37 @@ download_us_files()
 			"slc_coreg_15tmpsar0302_15tmpsar0303_Lvh_t01.rat"
 			"slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat"
 			)
-		for file in ${myFiles[@]}; do
-			echo $file
+			
+        gDriveURLs=(
+			"1pC6Q10QSrN1NtSKq-WSRSPhanAFUupbU"
+			"1DyPFk11Py2dbfZuBXLJF4q0cow7Itup5"
+			"1O9sKsXMmnB3NOxZTZLj_6EckXlypNYLb"
+			"1r0b3w8xoDuLp7JyIAHwECeuahLRUvW2L"
+			"12SbjmOLZdr_JuPlMRZ0iJvgGnPiOGpHK"
+			"1Cizvg32T0VTaEz3pHKn7hOrvEKdZEEMr"
+			"1h_NUJ6wosAX8aYRVjAllSMwPA84J1mjt"
+			"1WCtsS6kNw4H364s9fpEgyS6l1-l3mKPx"
+			"1VUnYTiq2qzsCXcYJfvJt9eH7tAO6UAHl"
+			"1oQVtUc5w1PsAhNRtlakjGLok3rz0K9WT"
+			"1TRbuwkO7Pzm_lYFIXNS1uyZusD4ks4f1"
+			"18Kx8gbpB9BM5dsrxjuZsH2G0l7WmznrL"
+			"15h0NhqVP_bFRSUJfQfL3y1VtH4WmuVZE"
+        )
+			
+		for index in ${!myFiles[*]}; do
+			echo ${myFiles[$index]} 
+			file=${myFiles[$index]}
+			fileID=${gDriveURLs[$index]}
 		    if [[ ! -f $DATA_FOLDER/04-polinsar/$file ]]; then
+		        cd $DATA_FOLDER/04-polinsar
+				gdown https://drive.google.com/uc?id=$fileID
+				cd $main_path
+			fi
+			# Download from S3 if GDrive fails
+		    if [[ ! -f $DATA_FOLDER/04-polinsar/$file ]]; then
+                echo "GDrive failed to download, switch to S3"
 				wget -O $DATA_FOLDER/04-polinsar/$file --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$file
 			fi
-		  # wget -O $DATA_FOLDER/04-polinsar/$file --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$file
 		done
 		# wget -O $FILENAME --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$FILENAME
 		# wget -O $FILENAME --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$FILENAME
@@ -382,7 +407,7 @@ download_us_files()
 		# unzip -j polinsar.zip -d $DATA_FOLDER/04-polinsar
 		# rm polsar.zip
 		cd $main_path
-	fi
+	# fi
 	
 	rm -r /projects/.Trash-0/* > /dev/null 2>&1
 	rm -r /tmp/* > /dev/null 2>&1
