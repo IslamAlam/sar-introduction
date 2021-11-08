@@ -258,7 +258,9 @@ download_us_files()
 
 	# For InSAR 6th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks-us/2021_11_01_MAAP_PolInSAR_InSAR_Part2.ipynb
-
+	
+	# For PolInSAR 7th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks-us/2021_11_08_MAAP_PolInSAR_PolInSAR_Part1.ipynb
 	# Slides
 	# wget_file $main_path/slides https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/lectures/MAAP-KP-2021-01-SARIntro-Part1.pdf
 	# wget_file $main_path/slides https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/lectures/MAAP-KP-2021-02-SARIntro-Part2.pdf
