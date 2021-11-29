@@ -365,6 +365,10 @@ download_us_files()
 	# wget_file $main_path/slides https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/lectures/MAAP-KP-2021-03-PolSAR-Part1-v2.pdf
 	# For PolInSAR 8th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks-us/2021_11_15_MAAP_PolInSAR_PolInSAR_Part2.ipynb
+	
+	# For TomoSAR 9th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks-us/2021_11_29_MAAP_PolInSAR_TomoSAR_Part1.ipynb
+
 	# Raw data SAR
 	if [[ ! -f $DATA_FOLDER/01-sar/raw-img.rat ]]; then
 		echo "01-sar: raw-data downloading"
@@ -509,6 +513,13 @@ download_us_files()
 		# rm polsar.zip
 		cd $main_path
 	# fi
+	
+	# For TomoSAR 9th Week
+	mkdir -p $DATA_FOLDER/05-tomosar
+	
+	wget_file $DATA_FOLDER/05-tomosar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/05-tomosar/pos_scatters_ground.npy
+	wget_file $DATA_FOLDER/05-tomosar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/05-tomosar/pos_scatters_layer1.npy
+
 	
 	rm -r /projects/.Trash-0/* > /dev/null 2>&1
 	rm -r /tmp/* > /dev/null 2>&1
