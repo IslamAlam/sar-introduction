@@ -111,6 +111,9 @@ download_files()
 	# For PolInSAR 8th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_11_29_Lecture_8.ipynb
 	
+	# For TomoSAR 9th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_12_06_Lecture_9.ipynb
+
 	# Slides
 	wget_file $main_path/slides https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/lectures/MAAP-KP-2021-01-SARIntro-Part1.pdf
 	wget_file $main_path/slides https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/lectures/MAAP-KP-2021-02-SARIntro-Part2.pdf
@@ -259,6 +262,13 @@ download_files()
 		cd $main_path
 	# fi
 	
+	# For TomoSAR 9th Week
+	mkdir -p $DATA_FOLDER/05-tomosar
+	
+	wget_file $DATA_FOLDER/05-tomosar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/05-tomosar/pos_scatters_ground.npy
+	wget_file $DATA_FOLDER/05-tomosar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/05-tomosar/pos_scatters_layer1.npy
+
+
 	rm -r /projects/.Trash-0/* > /dev/null 2>&1
 	rm -r /tmp/* > /dev/null 2>&1
 	return 1
