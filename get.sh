@@ -535,7 +535,7 @@ download_us_files()
 	# From TomoSAR 10th Week
 	# https://drive.google.com/file/d/1X6gNq7SkyuVbKiY1aKLMKngvYFBb0tDL/view?usp=sharing
 	# For TomoSAR
-	if [[ -d $DATA_FOLDER/05-tomosar ]]; then
+	if [[ ! -f $DATA_FOLDER/05-tomosar/dem.rat ]]; then
 		gdown https://drive.google.com/uc?id=1X6gNq7SkyuVbKiY1aKLMKngvYFBb0tDL
 		unzip -j 05-tomosar.zip -d $DATA_FOLDER/05-tomosar
 		if [[ ! -f $DATA_FOLDER/04-polinsar/$file ]]; then 
