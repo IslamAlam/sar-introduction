@@ -537,13 +537,14 @@ download_us_files()
 	# For TomoSAR
 	if [[ ! -f $DATA_FOLDER/05-tomosar/dem.rat ]]; then
 		gdown https://drive.google.com/uc?id=1X6gNq7SkyuVbKiY1aKLMKngvYFBb0tDL
-		unzip -j 05-tomosar.zip -d $DATA_FOLDER/05-tomosar
+		
 		if [[ ! -f $DATA_FOLDER/04-polinsar/$file ]]; then 
 			echo " Please enter your login details for the MAAP to download the data"
 			python $main_path/src/maap-s3.py refresh
 			python $main_path/src/maap-s3.py download maap-scientific-data/shared/polinsar-data/05-tomosar.zip /projects/05-tomosar.zip
 			# python maap-s3.py upload /projects/05-tomosar.zip maap-scientific-data/shared/polinsar-data/05-tomosar.zip
 		fi
+		unzip -j 05-tomosar.zip -d $DATA_FOLDER/05-tomosar
 		rm 05-tomosar.zip
 	fi
 	
