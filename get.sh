@@ -530,6 +530,14 @@ download_us_files()
 	wget_file $DATA_FOLDER/05-tomosar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/05-tomosar/pos_scatters_ground.npy
 	wget_file $DATA_FOLDER/05-tomosar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/05-tomosar/pos_scatters_layer1.npy
 
+	# From TomoSAR 10th Week
+	# https://drive.google.com/file/d/1X6gNq7SkyuVbKiY1aKLMKngvYFBb0tDL/view?usp=sharing
+		# For TomoSAR
+	if [[ -d $DATA_FOLDER/05-tomosar ]]; then
+		gdown https://drive.google.com/uc?id=1X6gNq7SkyuVbKiY1aKLMKngvYFBb0tDL
+		unzip -j 05-tomosar.zip -d $DATA_FOLDER/05-tomosar
+		rm 05-tomosar.zip
+	fi
 	
 	rm -r /projects/.Trash-0/* > /dev/null 2>&1
 	rm -r /tmp/* > /dev/null 2>&1
