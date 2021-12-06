@@ -381,6 +381,9 @@ download_us_files()
 	# For TomoSAR 9th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks-us/2021_11_29_MAAP_PolInSAR_TomoSAR_Part1.ipynb
 
+	# For TomoSAR 10th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks-us/2021_12_06_MAAP_PolInSAR_TomoSAR_Part2.ipynb
+
 	# Raw data SAR
 	if [[ ! -f $DATA_FOLDER/01-sar/raw-img.rat ]]; then
 		echo "01-sar: raw-data downloading"
