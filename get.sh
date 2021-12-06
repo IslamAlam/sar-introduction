@@ -68,6 +68,7 @@ download_files()
 	
 	# For src ste_io
 	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py
+	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
 	
 	# For SAR notebooks
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_05_31_Lecture_1.1.ipynb
@@ -329,6 +330,7 @@ download_us_files()
 	
 	# For src ste_io
 	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py
+	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
 	
 	# For SAR notebooks
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks-us/2021_09_27_Lecture1_SAR_Part1.ipynb
@@ -532,10 +534,16 @@ download_us_files()
 
 	# From TomoSAR 10th Week
 	# https://drive.google.com/file/d/1X6gNq7SkyuVbKiY1aKLMKngvYFBb0tDL/view?usp=sharing
-		# For TomoSAR
+	# For TomoSAR
 	if [[ -d $DATA_FOLDER/05-tomosar ]]; then
 		gdown https://drive.google.com/uc?id=1X6gNq7SkyuVbKiY1aKLMKngvYFBb0tDL
 		unzip -j 05-tomosar.zip -d $DATA_FOLDER/05-tomosar
+		if [[ ! -f $DATA_FOLDER/04-polinsar/$file ]]; then 
+			echo " Please enter your login details for the MAAP to download the data"
+			python $main_path/src/maap-s3.py refresh
+			python $main_path/src/maap-s3.py download maap-scientific-data/shared/polinsar-data/05-tomosar.zip /projects/05-tomosar.zip
+			# python maap-s3.py upload /projects/05-tomosar.zip maap-scientific-data/shared/polinsar-data/05-tomosar.zip
+		fi
 		rm 05-tomosar.zip
 	fi
 	
