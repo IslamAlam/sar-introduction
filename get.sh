@@ -114,6 +114,9 @@ download_files()
 	
 	# For TomoSAR 9th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_12_06_Lecture_9.ipynb
+	
+	# For TomoSAR 10th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/notebooks/2021_12_12_Lecture_10.ipynb
 
 	# Slides
 	wget_file $main_path/slides https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/lectures/MAAP-KP-2021-01-SARIntro-Part1.pdf
@@ -269,6 +272,21 @@ download_files()
 	wget_file $DATA_FOLDER/05-tomosar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/05-tomosar/pos_scatters_ground.npy
 	wget_file $DATA_FOLDER/05-tomosar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/05-tomosar/pos_scatters_layer1.npy
 
+	# From TomoSAR 10th Week
+	# https://drive.google.com/file/d/1X6gNq7SkyuVbKiY1aKLMKngvYFBb0tDL/view?usp=sharing
+	# For TomoSAR
+	if [[ ! -f $DATA_FOLDER/05-tomosar/dem.rat ]]; then
+		gdown https://drive.google.com/uc?id=1X6gNq7SkyuVbKiY1aKLMKngvYFBb0tDL
+		
+		if [[ ! -f 05-tomosar.zip ]]; then 
+			echo " Please enter your login details for the MAAP to download the data"
+			python $main_path/src/maap-s3.py refresh
+			python $main_path/src/maap-s3.py download maap-scientific-data/shared/polinsar-data/05-tomosar.zip /projects/05-tomosar.zip
+			# python maap-s3.py upload /projects/05-tomosar.zip maap-scientific-data/shared/polinsar-data/05-tomosar.zip
+		fi
+		unzip -j 05-tomosar.zip -d $DATA_FOLDER/05-tomosar
+		rm 05-tomosar.zip
+	fi
 
 	rm -r /projects/.Trash-0/* > /dev/null 2>&1
 	rm -r /tmp/* > /dev/null 2>&1
