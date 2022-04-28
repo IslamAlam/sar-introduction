@@ -432,7 +432,11 @@ def delete(destination):
         display_help()
 
 
-
+def delete_folder(remote_folder):
+    files_polinsar = list(remote_folder)
+    for file in files_polinsar.split('\n',):
+        # print(file)
+        delete(destination=file)
 
 ###################
 # download the data #
@@ -510,72 +514,8 @@ def list(path):
         print("[INFO] Result list:")  
         if(response.text):            
             print(response.text)
+            return response.text
         else:
             print("[INFO] No data found")
     else:
         display_help()
-
-# Store argument variable omitting the script name
-argv = sys.argv[1:]
-# Initialize result variable
-result=0
- 
-try:
-
-    if len(argv) == 0:
-        display_help()
-    else:
-        if argv[0] == 'resume':
-            resume()
-        elif argv[0] == 'refresh':
-            refresh()
-        elif argv[0] == 'upload':
-            # Upload a data
-            if len(argv) != 3:          
-                display_help()
-            else:
-                upload(argv[1], argv[2])
-        elif argv[0] == 'delete':
-            # Delete a data
-            if len(argv) != 2:
-                display_help()
-            else:
-                delete(argv[1])
-        elif argv[0] == 'token':
-            # Delete a data
-            if len(argv) != 3:
-                display_help()
-            else:
-                get_token(argv[1], argv[2])
-        elif argv[0] == 'login':
-            # Delete a data
-            if len(argv) != 3:
-                display_help()
-            else:
-                login(argv[1], argv[2])    
-        elif argv[0] == 'download':
-            # Download a data
-            if len(argv) != 3:
-                display_help()
-            else:
-                download(argv[1], argv[2])  
-        elif argv[0] == 'list':
-            # list a folder
-            if len(argv) != 2:
-                display_help()
-            else:
-                list(argv[1])
-        elif argv[0] == 'help':
-            display_help()
-        else:  
-            display_help()
-
-
-
-except getopt.GetoptError:
-
-  # Print the error message if the wrong option is provided
-  print('The wrong option is provided. Please run -h')
- 
-  # Terminate the script
-  sys.exit(2)
