@@ -152,6 +152,16 @@ def is_file_older_than_x_hour(file, hour=1):
     # Check against 214 hour 
     return ((time.time() - file_time) > 3600*hour)
 
+def upload_folder(sourceFolder, destination):
+    import pathlib
+    folder = pathlib.Path(sourceFolder)
+    for file in folder.glob('**/*.*'):
+        #print(file.name)
+        des = str(file.absolute()).replace(str(folder.absolute()),str(destination))
+        #print("copy:", file.absolute(), " to:", des)
+        upload(sourceFile=file.absolute(), destination=des)
+        
+# upload_folder(sourceFolder='./data', destination='maap-scientific-data/shared/polinsar/data')
 #########################
 # Upload the data in S3 #
 #########################

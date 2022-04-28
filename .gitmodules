@@ -1,0 +1,3 @@
+[submodule "maap-jupyter"]
+	path = maap-jupyter
+	url = https://repo.uat.maap-project.org/esa-common/che7/stacks/maap-jupyter.git
