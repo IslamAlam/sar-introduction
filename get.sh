@@ -620,7 +620,14 @@ download_polinsar_files_2022()
 	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
 
 	# Link data folder from S3 Bucket to /projects folder
-	ln -sf /projects/s3-drive/user-data/polinsar/data/ /projects/data
+	# ln -sf /projects/s3-drive/user-data/polinsar/data /projects/data
+    mkdir -p /projects/data
+    ln -sf /projects/s3-drive/user-data/polinsar/data/01-sar/ /projects/data
+    ln -sf /projects/s3-drive/user-data/polinsar/data/02-polsar/ /projects/data
+    ln -sf /projects/s3-drive/user-data/polinsar/data/03-insar/ /projects/data
+    ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
+    ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
+    
 	
 	#########################
 	# Download IPython Book #
