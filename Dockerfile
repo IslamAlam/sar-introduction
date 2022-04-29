@@ -124,10 +124,28 @@ RUN  \
     #jupyter notebook --generate-config
     # source $CONDA_DIR/bin/activate && \
     echo  "$(which python)" && \
+    conda clean --all -f -y && \
+    conda clean -y --packages && \
+    conda clean -y -a -f && \
     #$CONDA_DIR/envs/$ENV_NAME/bin/python -m ipykernel install --name $ENV_NAME --display-name "Python 3 ($ENV_NAME)" && \
     mamba clean --all -f -y && \
     conda clean -y --packages && \
     conda clean -y -a -f 
+
+RUN \
+    jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
+    # Also activate ipywidgets extension for JupyterLab
+    # Check this URL for most recent compatibilities
+    # https://github.com/jupyter-widgets/ipywidgets/tree/master/packages/jupyterlab-manager
+    jupyter labextension install @jupyter-widgets/jupyterlab-manager@^2.0.0 --no-build && \
+    jupyter labextension install @bokeh/jupyter_bokeh@^2.0.0 --no-build && \
+    jupyter labextension install jupyter-matplotlib@^0.7.2 --no-build && \
+    jupyter lab build -y && \
+    jupyter lab clean -y && \
+    npm cache clean --force && \
+    rm -rf "${HOME}/.cache/yarn" && \
+    rm -rf "${HOME}/.node-gyp"
+
 
 RUN git clone https://github.com/PAIR-code/facets.git && \
     jupyter nbextension install facets/facets-dist/ --sys-prefix && \
