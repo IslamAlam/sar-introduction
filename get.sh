@@ -646,6 +646,7 @@ else
 fi
 
 
+echo  $'\nThe 3rd edition of the DLR/ESA open PolInSAR training course\n'
 
-echo $'\n\n\n#######################\nMade with ❤️  in Munich! \nIn case of any issue with the data and notebooks contact: \n\t polinsar@imansour.net'
+echo $'\n\n\n#######################\nMade with ❤️ in Munich & Oberpfaffenhofen! \nIn case of any issue with the data and notebooks contact: \n\t polinsar@imansour.net'
 echo $'\nEnjoy your Training 🥳 😊\n'
