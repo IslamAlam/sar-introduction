@@ -618,9 +618,9 @@ download_polinsar_files_2022()
 	# For src ste_io
 	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py
 	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
-	
+
 	# Link data folder from S3 Bucket to /projects folder
-	ln -sf /projects/s3-drive/user-data/polinsar/data /projects
+	ln -sf /projects/s3-drive/user-data/polinsar/data/ /projects/data
 	
 	#########################
 	# Download IPython Book #
