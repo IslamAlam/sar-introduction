@@ -599,10 +599,43 @@ download_us_files()
 }
 
 
+download_files()
+{
+	#trap 'echo -e "Aborted, error $? in command: $BASH_COMMAND"; trap ERR; return 1' ERR
+	filemanager_os="unsupported"
+	filemanager_arch="unknown"
+	main_path="/projects"
+	
+	DATA_FOLDER=/projects/data
+	mkdir -p $DATA_FOLDER
+	# pip install gdown >/dev/null
+	
+	cd $main_path
+	
+	
+	#########################
+	# Download IPython Book #
+	#########################
+	
+	# For IPython Intro
+	if [[ ! -d $main_path/cookbook-2nd-code ]]; then
+		echo "Downloading Intro Book for IPython "Cookbook" "
+		git clone https://github.com/ipython-books/cookbook-2nd-code.git
+	fi
+
+	# For SAR notebooks
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_02_MAAP_PolInSAR_SAR_Part1.ipynb
+
+}
+
 if [[ $CHE_WORKSPACE_NAME == *"us"* ]]; then
     echo "US Course!"
     version="US"
     download_us_files
+elif [[ $CHE_WORKSPACE_NAME == *"polinsar"* ]]; then
+    echo "PolInSAR Course 2022!"
+    version="US"
+    download_polinsar_files_2022
 else
     version="EU"
     echo "EU Course!"
