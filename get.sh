@@ -637,7 +637,7 @@ if [[ $CHE_WORKSPACE_NAME == *"us"* ]]; then
     download_us_files
 elif [[ $CHE_WORKSPACE_NAME == *"polinsar"* ]]; then
     echo "PolInSAR Course 2022!"
-    version="US"
+    version="Pol InSAR Course 2022"
     download_polinsar_files_2022
 else
     version="EU"
