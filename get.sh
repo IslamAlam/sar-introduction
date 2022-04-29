@@ -599,7 +599,7 @@ download_us_files()
 }
 
 
-download_files()
+download_polinsar_files_2022()
 {
 	#trap 'echo -e "Aborted, error $? in command: $BASH_COMMAND"; trap ERR; return 1' ERR
 	filemanager_os="unsupported"
