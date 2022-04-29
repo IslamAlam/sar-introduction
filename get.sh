@@ -614,7 +614,7 @@ download_polinsar_files_2022()
 	
 
 	# Link data folder from S3 Bucket to /projects folder
-	ln -sf /projects/s3-drive/user-data/polinsar/data /projects/data
+	ln -sf /projects/s3-drive/user-data/polinsar/data /projects
 	
 	#########################
 	# Download IPython Book #
