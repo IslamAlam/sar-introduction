@@ -612,6 +612,9 @@ download_files()
 	
 	cd $main_path
 	
+
+	# Link data folder from S3 Bucket to /projects folder
+	ln -sf /projects/s3-drive/user-data/polinsar/data /projects/data
 	
 	#########################
 	# Download IPython Book #
