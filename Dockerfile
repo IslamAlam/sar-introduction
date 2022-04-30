@@ -515,3 +515,5 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
     mv "${HOME}/.local/share/jupyter/kernels/julia"* "${CONDA_DIR}/share/jupyter/kernels/" && \
     chmod -R go+rx "${CONDA_DIR}/share/jupyter" && \
     rm -rf "${HOME}/.local"
+
+WORKDIR /projects
