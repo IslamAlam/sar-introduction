@@ -1,0 +1,27 @@
+# This file is a template, and might need editing before it works on your project.
+# Official docker image.
+image: docker:latest
+
+stages:
+  - build
+
+services:
+  - docker:18.09.7-dind
+
+variables:
+    DOCKER_DRIVER: overlay
+    DOCKER_HOST: tcp://localhost:2375
+
+
+before_script:
+  #- docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  - docker login -u eu-west-0@$AK -p 2a66e70323f94d692f02a0e606178fb4c3dae89894092455c792fb48a13dc3d6 registry.eu-west-0.prod-cloud-ocb.orange-business.com/cloud-biomass-maap
+
+build-master:
+  stage: build
+  script:
+    - ./generate-jupyter-stack.sh
+    #- docker push "$CI_REGISTRY/$CI_PROJECT_PATH:latest"
+
+  only:
+    - master
