@@ -156,11 +156,21 @@ def upload_folder(sourceFolder, destination):
     import pathlib
     folder = pathlib.Path(sourceFolder)
     for file in folder.glob('**/*.*'):
-        #print(file.name)
-        des = str(file.absolute()).replace(str(folder.absolute()),str(destination))
-        #print("copy:", file.absolute(), " to:", des)
-        upload(sourceFile=file.absolute(), destination=des)
-        
+        if pathlib.Path(file).suffix is not '':
+            #print(file.name)
+            des = str(file.absolute()).replace(str(folder.absolute()),str(destination))
+            #print("copy:", file.absolute(), " to:", des)
+            upload(sourceFile=file.absolute(), destination=des)
+"""
+            files = list(remote_folder)
+    for file in files.split('\n',):
+        des = str(file).replace(str(remote_folder), str(destination))
+        if pathlib.Path(file).suffix is not '':
+            print("copy:", file, " to:", des)
+            pathlib.Path(des).parent.mkdir(parents=True, exist_ok=True)
+            download(remote_folder, des)
+            
+"""
 # upload_folder(sourceFolder='./data', destination='maap-scientific-data/shared/polinsar/data')
 #########################
 # Upload the data in S3 #
@@ -441,6 +451,18 @@ def delete_folder(remote_folder):
 ###################
 # download the data #
 ####################
+
+def download_folder(remote_folder, destination):
+    import pathlib
+    
+    files = list(remote_folder)
+    for file in files.split('\n',):
+        des = str(file).replace(str(remote_folder), str(destination))
+        if pathlib.Path(file).suffix is not '':
+            print("copy:", file, " to:", des)
+            pathlib.Path(des).parent.mkdir(parents=True, exist_ok=True)
+            download(remote_folder, des)
+            
 def download(path, name):
     print("[INFO] path file is : ", path)
     
@@ -577,12 +599,12 @@ try:
                 display_help()
             else:
                 download(argv[1], argv[2])
-        elif argv[0] == 'download':
+        elif argv[0] == 'download_folder':
             # Download a data
             if len(argv) != 3:
                 display_help()
             else:
-                download(argv[1], argv[2])  
+                download_folder(argv[1], argv[2])  
         elif argv[0] == 'list':
             # list a folder
             if len(argv) != 2:
