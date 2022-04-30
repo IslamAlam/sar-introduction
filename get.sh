@@ -601,6 +601,8 @@ download_us_files()
 
 download_polinsar_files_2022()
 {
+	echo  $'\nThe 3rd edition of the DLR/ESA open PolInSAR training course\n'
+
 	#trap 'echo -e "Aborted, error $? in command: $BASH_COMMAND"; trap ERR; return 1' ERR
 	filemanager_os="unsupported"
 	filemanager_arch="unknown"
@@ -659,7 +661,6 @@ else
 fi
 
 
-echo  $'\nThe 3rd edition of the DLR/ESA open PolInSAR training course\n'
 
 echo $'\n\n\n#######################\nMade with ❤️ in Munich & Oberpfaffenhofen! \nIn case of any issue with the data and notebooks contact: \n\t polinsar@imansour.net'
 echo $'\nEnjoy your Training 🥳 😊\n'
