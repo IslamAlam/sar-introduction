@@ -156,7 +156,7 @@ def upload_folder(sourceFolder, destination):
     import pathlib
     folder = pathlib.Path(sourceFolder)
     for file in folder.glob('**/*.*'):
-        if pathlib.Path(file).suffix is not '':
+        if pathlib.Path(file).suffix != '':
             #print(file.name)
             des = str(file.absolute()).replace(str(folder.absolute()),str(destination))
             #print("copy:", file.absolute(), " to:", des)
@@ -458,7 +458,7 @@ def download_folder(remote_folder, destination):
     files = list(remote_folder)
     for file in files.split('\n',):
         des = str(file).replace(str(remote_folder), str(destination))
-        if pathlib.Path(file).suffix is not '':
+        if pathlib.Path(file).suffix != '':
             print("copy:", file, " to:", des)
             pathlib.Path(des).parent.mkdir(parents=True, exist_ok=True)
             download(remote_folder, des)

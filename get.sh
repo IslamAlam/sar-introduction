@@ -624,12 +624,12 @@ download_polinsar_files_2022()
 	# Link data folder from S3 Bucket to /projects folder
 	# ln -sf /projects/s3-drive/user-data/polinsar/data /projects/data
     mkdir -p /projects/data
-    ln -sf /projects/s3-drive/user-data/polinsar/data/01-sar/ /projects/data
-    ln -sf /projects/s3-drive/user-data/polinsar/data/02-polsar/ /projects/data
-    ln -sf /projects/s3-drive/user-data/polinsar/data/03-insar/ /projects/data
-    ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
-    ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
-    
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/01-sar/ /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/02-polsar/ /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/03-insar/ /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
+	
 	
 	#########################
 	# Download IPython Book #
@@ -643,6 +643,21 @@ download_polinsar_files_2022()
 
 	# For SAR notebooks
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_02_MAAP_PolInSAR_SAR_Part1.ipynb
+
+	# For SAR 1st Week
+	mkdir -p $DATA_FOLDER/01-sar
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal1_rc.npy
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal2_rc.npy
+
+	# For SAR 1st week Solution
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal1_ac.npy
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal2_ac.npy
+
+	# Raw data SAR
+	if [[ ! -f $DATA_FOLDER/01-sar/raw-img.rat ]]; then
+		echo "01-sar: raw-data downloading"
+		gdown_file $DATA_FOLDER/01-sar/raw-img.rat 1Fue1i8IxZC3tKbg-Ax9q8B413Ggm832n
+	fi
 
 }
 
