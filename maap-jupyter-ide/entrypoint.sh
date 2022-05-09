@@ -22,7 +22,7 @@ service ssh start
 
 #Dowload a script from the env variable MAAP_INIT_SCRIPT_URL1  (git or s3 public by http)
 mkdir -p /projects/.maap
-wget -O /projects/.maap/maap_init.sh $MAAP_INIT_SCRIPT_URL1
+wget -O /projects/.maap/maap_init.sh $MAAP_INIT_SCRIPT_URL3
 chmod +x /projects/.maap/maap_init.sh
 /projects/.maap/maap_init.sh
 
