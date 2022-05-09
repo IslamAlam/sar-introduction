@@ -643,7 +643,6 @@ download_polinsar_files_2022()
 
 	# For SAR notebooks
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_02_MAAP_PolInSAR_SAR_Part1.ipynb
-
 	# For SAR 1st Week
 	mkdir -p $DATA_FOLDER/01-sar
 	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal1_rc.npy
@@ -658,6 +657,8 @@ download_polinsar_files_2022()
 		echo "01-sar: raw-data downloading"
 		gdown_file $DATA_FOLDER/01-sar/raw-img.rat 1Fue1i8IxZC3tKbg-Ax9q8B413Ggm832n
 	fi
+
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_09_MAAP_PolInSAR_SAR_Part2.ipynb
 
 }
 
