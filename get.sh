@@ -625,7 +625,7 @@ download_polinsar_files_2022()
 	# ln -sf /projects/s3-drive/user-data/polinsar/data /projects/data
     mkdir -p /projects/data
     # ln -sf /projects/s3-drive/user-data/polinsar/data/01-sar/ /projects/data
-    # ln -sf /projects/s3-drive/user-data/polinsar/data/02-polsar/ /projects/data
+    ln -sf /projects/s3-drive/user-data/polinsar/data/02-polsar/ /projects/data
     # ln -sf /projects/s3-drive/user-data/polinsar/data/03-insar/ /projects/data
     # ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
     # ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
