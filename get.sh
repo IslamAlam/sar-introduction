@@ -663,6 +663,8 @@ download_polinsar_files_2022()
 	# For PolSAR 3rd Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_16_MAAP_PolInSAR_PolSAR_Part1.ipynb
 	
+	# For PolSAR 4th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_23_MAAP_PolInSAR_PolSAR_Part2.ipynb
 
 }
 
