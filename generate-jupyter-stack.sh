@@ -1,6 +1,6 @@
 
 export DOCKER_ID_USER="imansour"
-export VERSION="0.0.16"
+export VERSION="0.0.17"
 
 docker build -t maap-sar-intro -t $DOCKER_ID_USER/maap-sar-intro:$VERSION -t $DOCKER_ID_USER/maap-sar-intro:latest .
 # docker tag maap-jupyterlab $DOCKER_ID_USER/maap-esa-jupyterlab:$VERSION
