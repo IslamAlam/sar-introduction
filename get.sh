@@ -631,8 +631,8 @@ download_polinsar_files_2022()
 	# if [[ -L "/projects/s3-drive/user-data/polinsar/data/03-insar/" ]]; then
 	# 	rm /projects/data/03-insar
 	# fi
-    ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
-    ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
 	
 	
 	#########################
