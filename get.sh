@@ -683,6 +683,10 @@ download_polinsar_files_2022()
 		gdown https://drive.google.com/uc?id=1gUvBLOFCu9Ctw5cYqOruZPXtKoMovJqW
 		gdown https://drive.google.com/uc?id=1khRB9MA1__x1nudr4kqt1vgZKEvb5Wu_
 		gdown https://drive.google.com/uc?id=1T1tTWRR_zPhj9JZxKnLTZvp43ocqsJGW
+		gdown https://drive.google.com/uc?id=16TO2lcyBL2abr14zu9MhL8GIx8na46Bc
+		gdown https://drive.google.com/uc?id=1gKYdJJjXKeZq-NAifQtWOG3f-1qdN-iy
+		gdown https://drive.google.com/uc?id=1WrEMJy311sGa5McOBwr2CXj0M57E-5rF
+		gdown https://drive.google.com/uc?id=1-AYTuuLmESusMd_iX_o_OiYUsfrOCpi-
 
 	fi
 
