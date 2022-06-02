@@ -1,4 +1,4 @@
-#!/usr/local/bin/python
+#!/opt/conda/bin/python
 import sys, getopt
 import requests
 import json
