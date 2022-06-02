@@ -629,7 +629,7 @@ download_polinsar_files_2022()
     # ln -sf /projects/s3-drive/user-data/polinsar/data/03-insar/ /projects/data
 	# 3. Check if ~/bin/script is a symlink.
 	if [[ -L "/projects/s3-drive/user-data/polinsar/data/03-insar/" ]]; then
-		rm /projects/s3-drive/user-data/polinsar/data/03-insar
+		rm /projects/data/03-insar
 	fi
     # ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
     # ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
