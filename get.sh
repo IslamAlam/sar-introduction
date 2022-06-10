@@ -631,7 +631,7 @@ download_polinsar_files_2022()
 	# if [[ -L "/projects/s3-drive/user-data/polinsar/data/03-insar/" ]]; then
 	# 	rm /projects/data/03-insar
 	# fi
-    # ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
+    ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
     # ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
 	
 	
@@ -693,6 +693,9 @@ download_polinsar_files_2022()
 
 	# For PolSAR 6th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_06_06_MAAP_PolInSAR_InSAR_Part2.ipynb
+
+	# For PolInSAR 7th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_06_13_MAAP_PolInSAR_PolInSAR_Part1.ipynb
 
 	cd $main_path
 
