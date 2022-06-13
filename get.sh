@@ -717,7 +717,8 @@ download_polinsar_files_2022()
 	# gdown https://drive.google.com/uc?id=18Kx8gbpB9BM5dsrxjuZsH2G0l7WmznrL
 	# gdown https://drive.google.com/uc?id=15h0NhqVP_bFRSUJfQfL3y1VtH4WmuVZE
 	
-	
+	python /projects/src/maap-s3.py login dlr35@esa-maap.org trainingDLR2021  2> /dev/null || true
+
 	myFiles=(
 		"incidence_15tmpsar0302_L_t01.rat"
 		"kz_2d_demc_15tmpsar0302_15tmpsar0303_t01.rat"
@@ -758,8 +759,8 @@ download_polinsar_files_2022()
 		if [[ ! -f $DATA_FOLDER/04-polinsar/$file ]]; then
 			# echo "GDrive failed to download, switch to S3"
 			# wget -O $DATA_FOLDER/04-polinsar/$file --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$file
-			# python /projects/src/maap-s3.py download maap-scientific-data/shared/polinsar/data/04-polinsar/$file /projects/data/04-polinsar/$file
-			cp /projects/s3-drive/user-data/polinsar/data/04-polinsar/$file /projects/data/04-polinsar/$file
+			python /projects/src/maap-s3.py download maap-scientific-data/shared/polinsar/data/04-polinsar/$file /projects/data/04-polinsar/$file
+			# cp /projects/s3-drive/user-data/polinsar/data/04-polinsar/$file /projects/data/04-polinsar/$file
 
 		fi
 		if [[ ! -f $DATA_FOLDER/04-polinsar/$file ]]; then
