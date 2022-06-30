@@ -780,6 +780,7 @@ download_polinsar_files_2022()
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_06_27_MAAP_PolInSAR_TomoSAR_Part1.ipynb
 
 	mkdir -p $DATA_FOLDER/05-tomosar
+	cd $DATA_FOLDER/05-tomosar
 	myFiles=(
 		"dem.rat"
 		"kz_00.rat"
