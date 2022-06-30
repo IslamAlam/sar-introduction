@@ -633,7 +633,7 @@ download_polinsar_files_2022()
 	# fi
     # ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
 	rm /projects/data/04-polinsar 2> /dev/null || true
-	rm /projects/data/05-polinsar 2> /dev/null || true
+	rm /projects/data/05-tomosar 2> /dev/null || true
 
     # ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
 	
