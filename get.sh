@@ -633,7 +633,9 @@ download_polinsar_files_2022()
 	# fi
     # ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
 	rm /projects/data/04-polinsar 2> /dev/null || true
-    ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
+	rm /projects/data/05-polinsar 2> /dev/null || true
+
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
 	
 	
 	#########################
@@ -777,7 +779,83 @@ download_polinsar_files_2022()
 	# For TomoSAR 8th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_06_27_MAAP_PolInSAR_TomoSAR_Part1.ipynb
 
+	mkdir -p $DATA_FOLDER/05-tomosar
+	myFiles=(
+		"dem.rat"
+		"kz_00.rat"
+		"kz_01.rat"
+		"kz_02.rat"
+		"kz_03.rat"
+		"kz_04.rat"
+		"kz_05.rat"
+		"kz_06.rat"
+		"kz_07.rat"
+		"kz_08.rat"
+		"kz_09.rat"
+		"kz_10.rat"
+		"lidar_chm.rat"
+		"lidar_dtm.rat"
+		"pha_dem_00.rat"
+		"pha_dem_01.rat"
+		"pha_dem_02.rat"
+		"pha_dem_03.rat"
+		"pha_dem_04.rat"
+		"pha_dem_05.rat"
+		"pha_dem_06.rat"
+		"pha_dem_07.rat"
+		"pha_dem_08.rat"
+		"pha_dem_09.rat"
+		"pha_dem_10.rat"
+		"pos_scatters_ground.npy"
+		"pos_scatters_layer1.npy"
+		"script_profiles.txt"
+		"slc_00_HH.rat"
+		"slc_00_HV.rat"
+		"slc_00_VV.rat"
+		"slc_01_HH.rat"
+		"slc_01_HV.rat"
+		"slc_01_VV.rat"
+		"slc_02_HH.rat"
+		"slc_02_HV.rat"
+		"slc_02_VV.rat"
+		"slc_03_HH.rat"
+		"slc_03_HV.rat"
+		"slc_03_VV.rat"
+		"slc_04_HH.rat"
+		"slc_04_HV.rat"
+		"slc_04_VV.rat"
+		"slc_05_HH.rat"
+		"slc_05_HV.rat"
+		"slc_05_VV.rat"
+		"slc_06_HH.rat"
+		"slc_06_HV.rat"
+		"slc_06_VV.rat"
+		"slc_07_HH.rat"
+		"slc_07_HV.rat"
+		"slc_07_VV.rat"
+		"slc_08_HH.rat"
+		"slc_08_HV.rat"
+		"slc_08_VV.rat"
+		"slc_09_HH.rat"
+		"slc_09_HV.rat"
+		"slc_09_VV.rat"
+		"slc_10_HH.rat"
+		"slc_10_HV.rat"
+		"slc_10_VV.rat"
+		)
+	 
+	for index in ${!myFiles[*]}; do
+		file=${myFiles[$index]}
+		# Download from S3 if GDrive fails
+		if [[ ! -f $DATA_FOLDER/05-tomosar/$file ]]; then
+			# echo "GDrive failed to download, switch to S3"
+			# wget -O $DATA_FOLDER/04-polinsar/$file --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$file
+			python /projects/src/maap-s3.py download maap-scientific-data/shared/polinsar/data/05-tomosar/$file /projects/data/05-tomosar/$file
+			# cp /projects/s3-drive/user-data/polinsar/data/04-polinsar/$file /projects/data/04-polinsar/$file
 
+		fi
+	done
+	
 	cd $main_path
 
 }
