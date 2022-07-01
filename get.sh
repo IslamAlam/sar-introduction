@@ -773,11 +773,14 @@ download_polinsar_files_2022()
 
 	done
 
-	# For PolInSAR 7th Week
+	# For PolInSAR 8th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_06_20_MAAP_PolInSAR_PolInSAR_Part2.ipynb
 
-	# For TomoSAR 8th Week
+	# For TomoSAR 9th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_06_27_MAAP_PolInSAR_TomoSAR_Part1.ipynb
+
+	# For TomoSAR 10th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_07_04_MAAP_PolInSAR_TomoSAR_Part2.ipynb
 
 	mkdir -p $DATA_FOLDER/05-tomosar
 	cd $DATA_FOLDER/05-tomosar
