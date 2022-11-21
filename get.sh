@@ -864,10 +864,279 @@ download_polinsar_files_2022()
 
 }
 
+download_polinsar_files_4th()
+{
+	echo  $'\nThe 4th edition of the DLR/ESA open PolInSAR training course\n'
+
+	#trap 'echo -e "Aborted, error $? in command: $BASH_COMMAND"; trap ERR; return 1' ERR
+	filemanager_os="unsupported"
+	filemanager_arch="unknown"
+	main_path="/projects"
+	
+	DATA_FOLDER=/projects/data
+	mkdir -p $DATA_FOLDER
+	# pip install gdown >/dev/null
+	
+	cd $main_path
+	
+
+	echo "Downloading Files"
+	
+	# For src ste_io
+	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py
+	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
+
+	# Link data folder from S3 Bucket to /projects folder
+	# ln -sf /projects/s3-drive/user-data/polinsar/data /projects/data
+    mkdir -p /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/01-sar/ /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/02-polsar/ /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/03-insar/ /projects/data
+	# 3. Check if ~/bin/script is a symlink.
+	# if [[ -L "/projects/s3-drive/user-data/polinsar/data/03-insar/" ]]; then
+	# 	rm /projects/data/03-insar
+	# fi
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
+	# rm /projects/data/04-polinsar 2> /dev/null || true
+	# rm /projects/data/05-tomosar 2> /dev/null || true
+
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
+	
+	
+	#########################
+	# Download IPython Book #
+	#########################
+	
+	# For IPython Intro
+	if [[ ! -d $main_path/cookbook-2nd-code ]]; then
+		echo "Downloading Intro Book for IPython "Cookbook" "
+		git clone https://github.com/ipython-books/cookbook-2nd-code.git
+	fi
+
+	# For SAR notebooks
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_11_18_MAAP_PolInSAR_SAR_Part1.ipynb 
+	# For SAR 1st Week
+	mkdir -p $DATA_FOLDER/01-sar
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal1_rc.npy
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal2_rc.npy
+
+	# For SAR 1st week Solution
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal1_ac.npy
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal2_ac.npy
+
+	# Raw data SAR
+	if [[ ! -f $DATA_FOLDER/01-sar/raw-img.rat ]]; then
+		echo "01-sar: raw-data downloading"
+		gdown_file $DATA_FOLDER/01-sar/raw-img.rat 1Fue1i8IxZC3tKbg-Ax9q8B413Ggm832n
+	fi
+
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_09_MAAP_PolInSAR_SAR_Part2.ipynb
+
+	# # For PolSAR 3rd Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_16_MAAP_PolInSAR_PolSAR_Part1.ipynb
+	
+	# # For PolSAR 4th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_23_MAAP_PolInSAR_PolSAR_Part2.ipynb
+
+	# # For PolSAR 5th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_30_MAAP_PolInSAR_InSAR_Part1.ipynb
+
+	# # Data for 5th & 6th Week
+	# if [[ ! -d $DATA_FOLDER/03-insar ]]; then
+	# 	mkdir -p $DATA_FOLDER/03-insar
+	# 	cd $DATA_FOLDER/03-insar
+	# 	gdown https://drive.google.com/uc?id=1OAf1obJRRld6fS_K5JDJGu5AjGMyVuaa
+	# 	gdown https://drive.google.com/uc?id=1rZUxpjE04m3XHXTLCJHxxFgsUt9NW1If
+	# 	gdown https://drive.google.com/uc?id=1rBg6AwSUYUrnyXI-I0r6ZyAwJg5K52ua
+	# 	gdown https://drive.google.com/uc?id=1gUvBLOFCu9Ctw5cYqOruZPXtKoMovJqW
+	# 	gdown https://drive.google.com/uc?id=1khRB9MA1__x1nudr4kqt1vgZKEvb5Wu_
+	# 	gdown https://drive.google.com/uc?id=1T1tTWRR_zPhj9JZxKnLTZvp43ocqsJGW
+	# 	gdown https://drive.google.com/uc?id=16TO2lcyBL2abr14zu9MhL8GIx8na46Bc
+	# 	gdown https://drive.google.com/uc?id=1gKYdJJjXKeZq-NAifQtWOG3f-1qdN-iy
+	# 	gdown https://drive.google.com/uc?id=1WrEMJy311sGa5McOBwr2CXj0M57E-5rF
+	# 	gdown https://drive.google.com/uc?id=1-AYTuuLmESusMd_iX_o_OiYUsfrOCpi-
+
+	# fi
+
+
+	# # For PolSAR 6th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_06_06_MAAP_PolInSAR_InSAR_Part2.ipynb
+
+	# # For PolInSAR 7th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_06_13_MAAP_PolInSAR_PolInSAR_Part1.ipynb
+
+	# mkdir -p $DATA_FOLDER/04-polinsar
+	# # cd $DATA_FOLDER/04-polinsar
+	# # gdown https://drive.google.com/uc?id=1muO7YkEpwN0JOlzXq4qk3byLQBQj2vgh
+	# # incidence_15tmpsar0302_L_t01.rat
+	# # gdown https://drive.google.com/uc?id=1pC6Q10QSrN1NtSKq-WSRSPhanAFUupbU
+	# # # kz_2d_demc_15tmpsar0302_15tmpsar0303_t01.rat
+	# # gdown https://drive.google.com/uc?id=1DyPFk11Py2dbfZuBXLJF4q0cow7Itup5
+	# # gdown https://drive.google.com/uc?id=1O9sKsXMmnB3NOxZTZLj_6EckXlypNYLb
+	# # gdown https://drive.google.com/uc?id=1r0b3w8xoDuLp7JyIAHwECeuahLRUvW2L
+	# # gdown https://drive.google.com/uc?id=12SbjmOLZdr_JuPlMRZ0iJvgGnPiOGpHK
+	# # gdown https://drive.google.com/uc?id=1Cizvg32T0VTaEz3pHKn7hOrvEKdZEEMr
+	# # gdown https://drive.google.com/uc?id=1h_NUJ6wosAX8aYRVjAllSMwPA84J1mjt
+	# # gdown https://drive.google.com/uc?id=1WCtsS6kNw4H364s9fpEgyS6l1-l3mKPx
+	# # gdown https://drive.google.com/uc?id=1VUnYTiq2qzsCXcYJfvJt9eH7tAO6UAHl
+	# # gdown https://drive.google.com/uc?id=1oQVtUc5w1PsAhNRtlakjGLok3rz0K9WT
+	# # gdown https://drive.google.com/uc?id=1TRbuwkO7Pzm_lYFIXNS1uyZusD4ks4f1
+	# # gdown https://drive.google.com/uc?id=18Kx8gbpB9BM5dsrxjuZsH2G0l7WmznrL
+	# # gdown https://drive.google.com/uc?id=15h0NhqVP_bFRSUJfQfL3y1VtH4WmuVZE
+	
+	# python /projects/src/maap-s3.py login dlr35@esa-maap.org trainingDLR2021  2> /dev/null || true
+
+	# myFiles=(
+	# 	"incidence_15tmpsar0302_L_t01.rat"
+	# 	"kz_2d_demc_15tmpsar0302_15tmpsar0303_t01.rat"
+	# 	"Lida_r1503.rat"
+	# 	"local_slope_15tmpsar0302_L_t01.rat"
+	# 	"pha_flat_15tmpsar0302_15tmpsar0303_Lhh_t01.rat"
+	# 	"slc_15tmpsar0302_Lhh_t01.rat"
+	# 	"slc_15tmpsar0302_Lhv_t01.rat"
+	# 	"slc_15tmpsar0302_Lvh_t01.rat"
+	# 	"slc_15tmpsar0302_Lvv_t01.rat"
+	# 	"slc_coreg_15tmpsar0302_15tmpsar0303_Lhh_t01.rat"
+	# 	"slc_coreg_15tmpsar0302_15tmpsar0303_Lhv_t01.rat"
+	# 	"slc_coreg_15tmpsar0302_15tmpsar0303_Lvh_t01.rat"
+	# 	"slc_coreg_15tmpsar0302_15tmpsar0303_Lvv_t01.rat"
+	# 	)
+		
+	# gDriveURLs=(
+	# 	"1pC6Q10QSrN1NtSKq-WSRSPhanAFUupbU"
+	# 	"1DyPFk11Py2dbfZuBXLJF4q0cow7Itup5"
+	# 	"1O9sKsXMmnB3NOxZTZLj_6EckXlypNYLb"
+	# 	"1r0b3w8xoDuLp7JyIAHwECeuahLRUvW2L"
+	# 	"12SbjmOLZdr_JuPlMRZ0iJvgGnPiOGpHK"
+	# 	"1Cizvg32T0VTaEz3pHKn7hOrvEKdZEEMr"
+	# 	"1h_NUJ6wosAX8aYRVjAllSMwPA84J1mjt"
+	# 	"1WCtsS6kNw4H364s9fpEgyS6l1-l3mKPx"
+	# 	"1VUnYTiq2qzsCXcYJfvJt9eH7tAO6UAHl"
+	# 	"1oQVtUc5w1PsAhNRtlakjGLok3rz0K9WT"
+	# 	"1TRbuwkO7Pzm_lYFIXNS1uyZusD4ks4f1"
+	# 	"18Kx8gbpB9BM5dsrxjuZsH2G0l7WmznrL"
+	# 	"15h0NhqVP_bFRSUJfQfL3y1VtH4WmuVZE"
+	# )
+		
+	# for index in ${!myFiles[*]}; do
+	# 	echo ${myFiles[$index]} 
+	# 	file=${myFiles[$index]}
+	# 	fileID=${gDriveURLs[$index]}
+	# 	# Download from S3 if GDrive fails
+	# 	if [[ ! -f $DATA_FOLDER/04-polinsar/$file ]]; then
+	# 		# echo "GDrive failed to download, switch to S3"
+	# 		# wget -O $DATA_FOLDER/04-polinsar/$file --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$file
+	# 		python /projects/src/maap-s3.py download maap-scientific-data/shared/polinsar/data/04-polinsar/$file /projects/data/04-polinsar/$file
+	# 		# cp /projects/s3-drive/user-data/polinsar/data/04-polinsar/$file /projects/data/04-polinsar/$file
+
+	# 	fi
+	# 	if [[ ! -f $DATA_FOLDER/04-polinsar/$file ]]; then
+	# 		cd $DATA_FOLDER/04-polinsar
+	# 		gdown https://drive.google.com/uc?id=$fileID
+	# 		cd $main_path
+	# 	fi
+
+	# done
+
+	# # For PolInSAR 8th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_06_20_MAAP_PolInSAR_PolInSAR_Part2.ipynb
+
+	# # For TomoSAR 9th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_06_27_MAAP_PolInSAR_TomoSAR_Part1.ipynb
+
+	# # For TomoSAR 10th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_07_04_MAAP_PolInSAR_TomoSAR_Part2.ipynb
+
+	# mkdir -p $DATA_FOLDER/05-tomosar
+	# cd $DATA_FOLDER/05-tomosar
+	# myFiles=(
+	# 	"dem.rat"
+	# 	"kz_00.rat"
+	# 	"kz_01.rat"
+	# 	"kz_02.rat"
+	# 	"kz_03.rat"
+	# 	"kz_04.rat"
+	# 	"kz_05.rat"
+	# 	"kz_06.rat"
+	# 	"kz_07.rat"
+	# 	"kz_08.rat"
+	# 	"kz_09.rat"
+	# 	"kz_10.rat"
+	# 	"lidar_chm.rat"
+	# 	"lidar_dtm.rat"
+	# 	"pha_dem_00.rat"
+	# 	"pha_dem_01.rat"
+	# 	"pha_dem_02.rat"
+	# 	"pha_dem_03.rat"
+	# 	"pha_dem_04.rat"
+	# 	"pha_dem_05.rat"
+	# 	"pha_dem_06.rat"
+	# 	"pha_dem_07.rat"
+	# 	"pha_dem_08.rat"
+	# 	"pha_dem_09.rat"
+	# 	"pha_dem_10.rat"
+	# 	"pos_scatters_ground.npy"
+	# 	"pos_scatters_layer1.npy"
+	# 	"script_profiles.txt"
+	# 	"slc_00_HH.rat"
+	# 	"slc_00_HV.rat"
+	# 	"slc_00_VV.rat"
+	# 	"slc_01_HH.rat"
+	# 	"slc_01_HV.rat"
+	# 	"slc_01_VV.rat"
+	# 	"slc_02_HH.rat"
+	# 	"slc_02_HV.rat"
+	# 	"slc_02_VV.rat"
+	# 	"slc_03_HH.rat"
+	# 	"slc_03_HV.rat"
+	# 	"slc_03_VV.rat"
+	# 	"slc_04_HH.rat"
+	# 	"slc_04_HV.rat"
+	# 	"slc_04_VV.rat"
+	# 	"slc_05_HH.rat"
+	# 	"slc_05_HV.rat"
+	# 	"slc_05_VV.rat"
+	# 	"slc_06_HH.rat"
+	# 	"slc_06_HV.rat"
+	# 	"slc_06_VV.rat"
+	# 	"slc_07_HH.rat"
+	# 	"slc_07_HV.rat"
+	# 	"slc_07_VV.rat"
+	# 	"slc_08_HH.rat"
+	# 	"slc_08_HV.rat"
+	# 	"slc_08_VV.rat"
+	# 	"slc_09_HH.rat"
+	# 	"slc_09_HV.rat"
+	# 	"slc_09_VV.rat"
+	# 	"slc_10_HH.rat"
+	# 	"slc_10_HV.rat"
+	# 	"slc_10_VV.rat"
+	# 	)
+	 
+	# for index in ${!myFiles[*]}; do
+	# 	file=${myFiles[$index]}
+	# 	# Download from S3 if GDrive fails
+	# 	if [[ ! -f $DATA_FOLDER/05-tomosar/$file ]]; then
+	# 		# echo "GDrive failed to download, switch to S3"
+	# 		# wget -O $DATA_FOLDER/04-polinsar/$file --no-check-certificate --no-proxy https://dlrpolinsar.s3.eu-west-3.amazonaws.com/$file
+	# 		python /projects/src/maap-s3.py download maap-scientific-data/shared/polinsar/data/05-tomosar/$file /projects/data/05-tomosar/$file
+	# 		# cp /projects/s3-drive/user-data/polinsar/data/04-polinsar/$file /projects/data/04-polinsar/$file
+
+	# 	fi
+	# done
+	
+	cd $main_path
+
+}
+
 if [[ $CHE_WORKSPACE_NAME == *"us"* ]]; then
     echo "US Course!"
     version="US"
     download_us_files
+elif [[ $CHE_WORKSPACE_NAME == *"polinsar-4"* ]]; then
+    echo "PolInSAR Course 4th 2022-11!"
+    version="Pol InSAR Course 4th 2022"
+    download_polinsar_files_4th
 elif [[ $CHE_WORKSPACE_NAME == *"polinsar"* ]]; then
     echo "PolInSAR Course 2022!"
     version="Pol InSAR Course 2022"

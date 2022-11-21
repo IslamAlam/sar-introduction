@@ -1,0 +1,58 @@
+metadata:
+  generateName: polinsar-4-
+attributes:
+  editorFree: 'true'
+components:
+  - endpoints:
+      - name: jupyter
+        port: 3100
+        attributes:
+          type: ide
+          discoverable: 'false'
+          path: /
+          public: 'true'
+          protocol: http
+    referenceContent: |
+      kind: List
+      items:
+        - apiVersion: v1
+          kind: Pod
+          metadata:
+            name: ws
+            labels:
+              name: ws
+          spec:
+           containers: 
+            - name: jupyter
+              image: 'imansour/maap-sar-intro:latest'
+              imagePullPolicy: IfNotPresent
+              envFrom:
+                - configMapRef:
+                    name: maap-configmap
+              mountSources: true
+              resources:
+                limits:
+                  memory: 10240Mi
+              securityContext:
+                privileged: true
+              volumeMounts:
+              - name: s3fs
+                mountPath: "/etc/s3fs"
+                readOnly: true
+           imagePullSecrets:
+             - name: secret-docker-bimaap
+           volumes:
+             - name: s3fs
+               secret:
+                 secretName: s3-credential
+    type: kubernetes
+    volumes:
+        - name: projects
+          containerPath: /projects
+    alias: maap-jupyterlab
+    env:
+      - value: WS_JUPYTER
+        name: MACHINE_NAME     
+      - value: /projects
+        name: JUPYTER_NOTEBOOK_DIR            
+apiVersion: 1.0.0
