@@ -914,7 +914,8 @@ download_polinsar_files_4th()
 	fi
 
 	# For SAR notebooks
-	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_11_18_MAAP_PolInSAR_SAR_Part1.ipynb 
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_11_21_MAAP_PolInSAR_SAR_Part1.ipynb 
+	rm $main_path/2022_11_18_MAAP_PolInSAR_SAR_Part1.ipynb 2> /dev/null || true
 	# For SAR 1st Week
 	mkdir -p $DATA_FOLDER/01-sar
 	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal1_rc.npy
