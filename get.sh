@@ -930,6 +930,10 @@ download_polinsar_files_4th()
 		echo "01-sar: raw-data downloading"
 		gdown_file $DATA_FOLDER/01-sar/raw-img.rat 1Fue1i8IxZC3tKbg-Ax9q8B413Ggm832n
 	fi
+    if [[ ! -f $DATA_FOLDER/01-sar/raw-img.rat ]]; then
+		echo "01-sar: raw-data downloading"
+		cp /projects/s3-drive/user-data/polinsar/data/01-sar/raw-img.rat $DATA_FOLDER/01-sar/raw-img.rat
+	fi
 
 	# Notebook 2nd Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_11_28_MAAP_PolInSAR_SAR_Part2.ipynb
