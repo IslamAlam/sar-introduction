@@ -4,23 +4,28 @@ import requests
 import json
 import sys
 import os
+import re
 import time
 import math
 import os.path as path
 # Import getopt module
 import getopt
-
+import getpass
 
 MAAP_ENV_TYPE = os.getenv("MAAP_ENV_TYPE")
 CLIENT_ID = os.getenv("CLIENT_ID")
+HOME = os.getenv("HOME")
+
+#Url to retrieve the access token with the user credential
+AUTH_ACCESS_TOKEN_URL = os.getenv("AUTH_ACCESS_TOKEN_URL") 
 BEARER=""
 #if windows we take the current folder
 if sys.platform == 'win32':
    USER_INFO_FILE_PATH=os.getcwd()+"\maap-s3-userinfo.json"
    USER_LAST_UPLOAD_INFO_FILE_PATH=os.getcwd()+"\maap-s3-multipartinfo.json"
 else :
-   USER_INFO_FILE_PATH="/usr/bmap/maap-s3-userinfo.json"
-   USER_LAST_UPLOAD_INFO_FILE_PATH="/usr/bmap/maap-s3-multipartinfo.json"
+   USER_INFO_FILE_PATH=HOME+"/.maap/maap-s3-userinfo.json"
+   USER_LAST_UPLOAD_INFO_FILE_PATH=HOME+"/.maap/maap-s3-multipartinfo.json"
    
 userinfo = {}
 multipartinfo = {}
@@ -74,7 +79,8 @@ def init():
 def refresh():
     email = input("Your email: ")
     #password
-    password = input("Your password: ")           
+    #password = input("Your password: ")     
+    password = getpass.getpass('Your password:')
     #Function to generate a new token
     generate_token(email, password)
 
@@ -97,10 +103,10 @@ def generate_token(email, password):
         
     print("[INFO] Start retrieving token for authent")
     #Set the bearer
-    url = "https://iam."+MAAP_ENV_TYPE.lower()+".esa-maap.org/oxauth/restv1/token"
+    url = AUTH_ACCESS_TOKEN_URL
     print (url)
     print (CLIENT_ID)
-    response = requests.post(url, data={'client_id': CLIENT_ID, 'username': email, 'password': password, "grant_type": "password", "scope": "openid+profile"})
+    response = requests.post(url, data={'client_id': CLIENT_ID, 'username': email, 'password': password, "grant_type": "password", "scope": "profile"})
     print(response)
     #Convert the string to json to fecth access_token
     data = json.loads(response.text)
@@ -134,8 +140,8 @@ def get_token(email, password):
         
     #print("[INFO] Start retrieving token for authent")
     #Set the bearer
-    url = "https://iam."+MAAP_ENV_TYPE.lower()+".esa-maap.org/oxauth/restv1/token"
-    response = requests.post(url, data={'client_id': CLIENT_ID, 'username': email, 'password': password, "grant_type": "password", "scope": "openid+profile"})
+    url = AUTH_ACCESS_TOKEN_URL
+    response = requests.post(url, data={'client_id': CLIENT_ID, 'username': email, 'password': password, "grant_type": "password", "scope": "profile"})
     #Convert the string to json to fecth access_token
     data = json.loads(response.text)
     token = data['access_token']
@@ -456,12 +462,15 @@ def download_folder(remote_folder, destination):
     import pathlib
     
     files = list(remote_folder)
-    for file in files.split('\n',):
-        des = str(file).replace(str(remote_folder), str(destination))
-        if pathlib.Path(file).suffix != '':
+    for file in files:
+        # print(file)
+        file_path = pathlib.Path(file)
+        index = file_path.parts.index(file_path.parent.name)
+        des = pathlib.Path(pathlib.Path(destination).parent).joinpath(*file_path.parts[index:])
+        if pathlib.Path(file_path).suffix != '':
             print("copy:", file, " to:", des)
             pathlib.Path(des).parent.mkdir(parents=True, exist_ok=True)
-            download(remote_folder, des)
+            download(str(file_path), str(des))
             
 def download(path, name):
     print("[INFO] path file is : ", path)
@@ -536,12 +545,11 @@ def list(path):
         print("[INFO] Result list:")  
         if(response.text):            
             print(response.text)
-            return response.text
+            return re.split('\\n', response.text.rstrip())
         else:
             print("[INFO] No data found")
     else:
         display_help()
-        
 
 # Store argument variable omitting the script name
 argv = sys.argv[1:]
@@ -598,7 +606,7 @@ try:
             if len(argv) != 3:
                 display_help()
             else:
-                download(argv[1], argv[2])
+                download(argv[1], argv[2])  
         elif argv[0] == 'download_folder':
             # Download a data
             if len(argv) != 3:

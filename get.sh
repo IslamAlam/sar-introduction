@@ -719,7 +719,7 @@ download_polinsar_files_2022()
 	# gdown https://drive.google.com/uc?id=18Kx8gbpB9BM5dsrxjuZsH2G0l7WmznrL
 	# gdown https://drive.google.com/uc?id=15h0NhqVP_bFRSUJfQfL3y1VtH4WmuVZE
 	
-	python /projects/src/maap-s3.py login dlr35@esa-maap.org trainingDLR2021  2> /dev/null || true
+	python /projects/src/maap-s3.py login dlr37@esa-maap.org vHJg8jmnvrutKkM  2> /dev/null || true
 
 	myFiles=(
 		"incidence_15tmpsar0302_L_t01.rat"
@@ -884,7 +884,10 @@ download_polinsar_files_4th()
 	
 	# For src ste_io
 	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py
+	rm -rf $main_path/src/maap-s3.py
 	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
+
+	python /projects/src/maap-s3.py login dlr37@esa-maap.org vHJg8jmnvrutKkM > /dev/null || true
 
 	# Link data folder from S3 Bucket to /projects folder
 	# ln -sf /projects/s3-drive/user-data/polinsar/data /projects/data
@@ -938,8 +941,21 @@ download_polinsar_files_4th()
 	# Notebook 2nd Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_11_28_MAAP_PolInSAR_SAR_Part2.ipynb
 
+    # Data for 3rd week
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/02-polsar/ /projects/data
+
+	# For PolSAR
+	if [[ ! -f $DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat ]]; then
+		# echo "Remove old dir and download new dataset"
+		# rm -r $DATA_FOLDER/02-polsar
+		gdown https://drive.google.com/uc?id=1nWkhr0tg3G69kiPzGI5YLIuAVT28r8BI
+
+		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/02-polsar $DATA_FOLDER/02-polsar
+	fi
+
+	
 	# # For PolSAR 3rd Week
-	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_16_MAAP_PolInSAR_PolSAR_Part1.ipynb
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_12_05_MAAP_PolInSAR_PolSAR_Part1.ipynb
 	
 	# # For PolSAR 4th Week
 	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_23_MAAP_PolInSAR_PolSAR_Part2.ipynb
@@ -990,7 +1006,7 @@ download_polinsar_files_4th()
 	# # gdown https://drive.google.com/uc?id=18Kx8gbpB9BM5dsrxjuZsH2G0l7WmznrL
 	# # gdown https://drive.google.com/uc?id=15h0NhqVP_bFRSUJfQfL3y1VtH4WmuVZE
 	
-	# python /projects/src/maap-s3.py login dlr35@esa-maap.org trainingDLR2021  2> /dev/null || true
+	# python /projects/src/maap-s3.py login dlr37@esa-maap.org vHJg8jmnvrutKkM  2> /dev/null || true
 
 	# myFiles=(
 	# 	"incidence_15tmpsar0302_L_t01.rat"
