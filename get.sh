@@ -960,10 +960,14 @@ download_polinsar_files_4th()
 	# For PolSAR 4th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_12_12_MAAP_PolInSAR_PolSAR_Part2.ipynb
 
-	# # For PolSAR 5th Week
-	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_05_30_MAAP_PolInSAR_InSAR_Part1.ipynb
+	# # For InSAR 5th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_01_09_MAAP_PolInSAR_InSAR_Part1.ipynb
 
 	# # Data for 5th & 6th Week
+	if [[ ! -d $DATA_FOLDER/03-insar/ ]]; then
+		mkdir -p $DATA_FOLDER/03-insar
+		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/03-insar $DATA_FOLDER/03-insar
+	fi
 	# if [[ ! -d $DATA_FOLDER/03-insar ]]; then
 	# 	mkdir -p $DATA_FOLDER/03-insar
 	# 	cd $DATA_FOLDER/03-insar
