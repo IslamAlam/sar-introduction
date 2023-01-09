@@ -461,17 +461,17 @@ def delete_folder(remote_folder):
 def download_folder(remote_folder, destination):
     import pathlib
     
-	files = list(remote_folder)
-	# print(files)
-	for file in files:
-		# print(file)
-		file_path = pathlib.Path(file)
-		index = file_path.parts.index(file_path.name)
-		des = pathlib.Path(pathlib.Path(destination)).joinpath(*file_path.parts[index:])
-		if pathlib.Path(file_path).suffix != '':
-			print("copy:", file, " to:", des)
-			pathlib.Path(des).parent.mkdir(parents=True, exist_ok=True)
-			download(str(file_path), str(des))
+    files = list(remote_folder)
+    # print(files)
+    for file in files:
+        # print(file)
+        file_path = pathlib.Path(file)
+        index = file_path.parts.index(file_path.name)
+        des = pathlib.Path(pathlib.Path(destination)).joinpath(*file_path.parts[index:])
+        if pathlib.Path(file_path).suffix != '':
+            print("copy:", file, " to:", des)
+            pathlib.Path(des).parent.mkdir(parents=True, exist_ok=True)
+            download(str(file_path), str(des))
             
 def download(path, name):
     print("[INFO] path file is : ", path)
