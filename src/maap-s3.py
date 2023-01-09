@@ -461,16 +461,17 @@ def delete_folder(remote_folder):
 def download_folder(remote_folder, destination):
     import pathlib
     
-    files = list(remote_folder)
-    for file in files:
-        # print(file)
-        file_path = pathlib.Path(file)
-        index = file_path.parts.index(file_path.parent.name)
-        des = pathlib.Path(pathlib.Path(destination).parent).joinpath(*file_path.parts[index:])
-        if pathlib.Path(file_path).suffix != '':
-            print("copy:", file, " to:", des)
-            pathlib.Path(des).parent.mkdir(parents=True, exist_ok=True)
-            download(str(file_path), str(des))
+	files = list(remote_folder)
+	# print(files)
+	for file in files:
+		# print(file)
+		file_path = pathlib.Path(file)
+		index = file_path.parts.index(file_path.name)
+		des = pathlib.Path(pathlib.Path(destination)).joinpath(*file_path.parts[index:])
+		if pathlib.Path(file_path).suffix != '':
+			print("copy:", file, " to:", des)
+			pathlib.Path(des).parent.mkdir(parents=True, exist_ok=True)
+			download(str(file_path), str(des))
             
 def download(path, name):
     print("[INFO] path file is : ", path)
@@ -487,8 +488,21 @@ def download(path, name):
         #Get the presigned url to download the data
         url = "https://gravitee-gateway."+MAAP_ENV_TYPE.lower()+".esa-maap.org/s3/"+path
 
-        response = requests.get(url, headers = {'Authorization': 'Bearer '+token}, allow_redirects=False)     
-        location = response.headers['Location']
+        attempts = 0
+
+        while attempts < 5:
+            try:
+                response = requests.get(url, headers = {'Authorization': 'Bearer '+token}, allow_redirects=False)     
+
+                response.raise_for_status()
+                break
+            except requests.exceptions.HTTPError as errh:
+                print ("Http Error:",errh)
+                print("Trying again.")
+
+        if response.ok:
+            print("Got correct response code!")
+            location = response.headers['Location']
         
         #We have the 
         if location:
@@ -544,7 +558,7 @@ def list(path):
         response = requests.get(url, headers = {'Authorization': 'Bearer '+token}, allow_redirects=False)     
         print("[INFO] Result list:")  
         if(response.text):            
-            print(response.text)
+            # print(response.text)
             return re.split('\\n', response.text.rstrip())
         else:
             print("[INFO] No data found")

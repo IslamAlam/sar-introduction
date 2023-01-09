@@ -965,7 +965,7 @@ download_polinsar_files_4th()
 
 	# # Data for 5th & 6th Week
 	if [[ ! -d $DATA_FOLDER/03-insar/ ]]; then
-		mkdir -p $DATA_FOLDER/03-insar
+		# mkdir -p $DATA_FOLDER/03-insar
 		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/03-insar $DATA_FOLDER/03-insar
 	fi
 	# if [[ ! -d $DATA_FOLDER/03-insar ]]; then
