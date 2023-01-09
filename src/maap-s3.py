@@ -17,7 +17,7 @@ CLIENT_ID = os.getenv("CLIENT_ID")
 HOME = os.getenv("HOME")
 
 #Url to retrieve the access token with the user credential
-AUTH_ACCESS_TOKEN_URL = os.getenv("AUTH_ACCESS_TOKEN_URL") 
+AUTH_ACCESS_TOKEN_URL = os.getenv("AUTH_ACCESS_TOKEN_URL")
 BEARER=""
 #if windows we take the current folder
 if sys.platform == 'win32':
@@ -26,7 +26,7 @@ if sys.platform == 'win32':
 else :
    USER_INFO_FILE_PATH=HOME+"/.maap/maap-s3-userinfo.json"
    USER_LAST_UPLOAD_INFO_FILE_PATH=HOME+"/.maap/maap-s3-multipartinfo.json"
-   
+
 userinfo = {}
 multipartinfo = {}
 
@@ -49,7 +49,7 @@ def display_help():
 #########################
 def init():
 
-        
+
     if os.path.isfile(USER_INFO_FILE_PATH):
         print("[INFO] Personal user info is find")
         #Check if the file is created less than one hour
@@ -63,7 +63,7 @@ def init():
             password=userinfo['password']
             #Regenerate token
             #Function to generate a new token
-            generate_token(email, password)            
+            generate_token(email, password)
 
         else:
             print("[INFO] Token is still valid")
@@ -79,7 +79,7 @@ def init():
 def refresh():
     email = input("Your email: ")
     #password
-    #password = input("Your password: ")     
+    #password = input("Your password: ")
     password = getpass.getpass('Your password:')
     #Function to generate a new token
     generate_token(email, password)
@@ -90,17 +90,17 @@ def refresh():
 ###################################
 def login(email, password):
     if email and password:
-        print("[INFO] Get an existing or fresh token")         
+        print("[INFO] Get an existing or fresh token")
         #Function to generate a new token
         generate_token(email, password)
     else:
-        print("[ERROR] Please check your email or password") 
+        print("[ERROR] Please check your email or password")
 
 ###########################
 # Generate token and save #
 ###########################
-def generate_token(email, password): 
-        
+def generate_token(email, password):
+
     print("[INFO] Start retrieving token for authent")
     #Set the bearer
     url = AUTH_ACCESS_TOKEN_URL
@@ -120,13 +120,13 @@ def generate_token(email, password):
         'token': token
     }
 
-    if token: 
+    if token:
         #add the json in the file
         with open(USER_INFO_FILE_PATH, 'w') as outfile:
             json.dump(userinfo, outfile)
-           
+
         print("[INFO] Token saved for one hour and ready to be used "+token)
-        
+
     else:
         print("[ERROR] Token is empty. Please 1) run refresh (-r) function and check your password")
         # Terminate the script
@@ -136,8 +136,8 @@ def generate_token(email, password):
 ################################
 # Generate token and return it #
 ###############################
-def get_token(email, password): 
-        
+def get_token(email, password):
+
     #print("[INFO] Start retrieving token for authent")
     #Set the bearer
     url = AUTH_ACCESS_TOKEN_URL
@@ -153,9 +153,9 @@ def get_token(email, password):
 #########################
 # Check if file is older#
 #########################
-def is_file_older_than_x_hour(file, hour=1): 
-    file_time = path.getmtime(file) 
-    # Check against 214 hour 
+def is_file_older_than_x_hour(file, hour=1):
+    file_time = path.getmtime(file)
+    # Check against 214 hour
     return ((time.time() - file_time) > 3600*hour)
 
 def upload_folder(sourceFolder, destination):
@@ -175,7 +175,7 @@ def upload_folder(sourceFolder, destination):
             print("copy:", file, " to:", des)
             pathlib.Path(des).parent.mkdir(parents=True, exist_ok=True)
             download(remote_folder, des)
-            
+
 """
 # upload_folder(sourceFolder='./data', destination='maap-scientific-data/shared/polinsar/data')
 #########################
@@ -183,26 +183,26 @@ def upload_folder(sourceFolder, destination):
 #########################
 def upload(sourceFile, destination):
     print("[INFO] Source file is : ", sourceFile)
-    print("[INFO] Destination file is : ", destination) 
+    print("[INFO] Destination file is : ", destination)
 
     if sourceFile and destination:
         print("[INFO] Get an existing or fresh token")
         #Generate or get a token
         init()
 
-            
+
         # If the file is less that 100 MB we upload directly
         #Check file size
         fileSize = os.stat(sourceFile).st_size
         print("Size "+ str(fileSize))
-    
+
         #We have more than 5GB
         if fileSize > 5000000000:
             #We upload the multi part data
             print("[INFO] Starting multi part upload")
             upload_multipart(sourceFile, destination)
 
-        else: 
+        else:
             with open(USER_INFO_FILE_PATH) as json_file:
                 userinfo = json.load(json_file)
                 #Get the info
@@ -223,7 +223,7 @@ def upload(sourceFile, destination):
                     print(response)
                 #files = {'file': open(sourceFile, 'rb')}
                 #r = requests.put(location, files=files)
-                
+
             else:
                 print("[ERROR] Presigned url not generated. Please re run refresh or contact admin if the error persist")
 
@@ -250,20 +250,20 @@ def upload_multipart(sourceFile, destination):
     fileSize = os.stat(filePath).st_size
     print("Size "+ str(fileSize))
     #Set max to split to 5M
-    max_size = 5 * 1024 * 1024 # Approach 1: Assign the size 
+    max_size = 5 * 1024 * 1024 # Approach 1: Assign the size
     nbParts = math.ceil(fileSize/max_size)    #calculate nbParts
     print("[INFO] We will have "+ str(nbParts)+" parts")
-            
-    
+
+
     url = "https://gravitee-gateway."+MAAP_ENV_TYPE.lower()+".esa-maap.org/s3/generateUploadId"
     params={'bucketName': 'bmap-catalogue-data', 'objectKey': key}
     response = requests.get(url, params = params,  headers = {'Authorization': 'Bearer '+token})
- 
+
     print("[INFO] uploadId "+ response.text)
     #Save upload id
     uploadId = response.text
 
-    #Generate presigned urls 
+    #Generate presigned urls
     url = "https://gravitee-gateway."+MAAP_ENV_TYPE.lower()+".esa-maap.org/s3/generateListPresignedUrls"
     params={'bucketName': 'bmap-catalogue-data', 'objectKey': key, 'nbParts': nbParts, 'uploadId': uploadId}
     response = requests.get(url, params = params, headers = {'Authorization': 'Bearer '+token})
@@ -277,7 +277,7 @@ def upload_multipart(sourceFile, destination):
     parts = []
 
     #sys.stdout = open("log.txt", "w")
-    with open(filePath, 'rb') as f:    
+    with open(filePath, 'rb') as f:
         i = 0
         while i < nbParts:
             print("Upload part "+ str(i))
@@ -287,7 +287,7 @@ def upload_multipart(sourceFile, destination):
             response = requests.put(listPresignedUrl[i], data=file_data, headers=headers)
             #print(response.headers)
             #print(response.text)
-            etag = response.headers['ETag']  
+            etag = response.headers['ETag']
             parts.append({'eTag': etag, 'partNumber': int(i+1)})
             print(parts)
             i = i+1
@@ -299,7 +299,7 @@ def upload_multipart(sourceFile, destination):
                 'sourceFile': sourceFile,
                 'destination': destination
             }
-            
+
             #add the json in the file
             with open(USER_LAST_UPLOAD_INFO_FILE_PATH, 'w') as outfile:
                 json.dump(multipartinfo, outfile)
@@ -311,7 +311,7 @@ def upload_multipart(sourceFile, destination):
     params={'bucketName': 'bmap-catalogue-data', 'objectKey': key, 'nbParts': nbParts, 'uploadId': uploadId}
     response = requests.get(url, data=str(parts),  params = params, headers = {'Authorization': 'Bearer '+token})
     #delete the file of multipart info because upload was success
-    os.remove(USER_LAST_UPLOAD_INFO_FILE_PATH) 
+    os.remove(USER_LAST_UPLOAD_INFO_FILE_PATH)
 
 
 
@@ -324,7 +324,7 @@ def resume():
     print("[INFO] Check last multipart upload metadata")
 
     if os.path.isfile(USER_LAST_UPLOAD_INFO_FILE_PATH):
-        
+
         #Generate or get a token
         init()
         print("[INFO] Previous multi part upload file found")
@@ -334,7 +334,7 @@ def resume():
             userinfo = json.load(json_file)
             #Get the info
             token=userinfo['token']
-        
+
         #Get the data in the json file
         with open(USER_LAST_UPLOAD_INFO_FILE_PATH) as json_file:
             multipartinfo = json.load(json_file)
@@ -343,46 +343,46 @@ def resume():
             destination=multipartinfo['destination']
             sourceFile=multipartinfo['sourceFile']
             partsUpploaded=multipartinfo['partsUpploaded']
-            
+
             #We get the presigned url
             fileSize = os.stat(sourceFile).st_size
             print("Size "+ str(fileSize))
             #Set max to split to 5M
-            max_size = 5 * 1024 * 1024 # Approach 1: Assign the size 
+            max_size = 5 * 1024 * 1024 # Approach 1: Assign the size
             nbParts = math.ceil(fileSize/max_size)    #calculate nbParts
             finalPart = nbParts - len(partsUpploaded)
             print("[INFO] We will have "+ str(nbParts)+" parts minus already uploaded parts. We have to push "+ str(finalPart) +" parts")
-                        
-            #Generate presigned urls 
-            
+
+            #Generate presigned urls
+
             url = "https://gravitee-gateway."+MAAP_ENV_TYPE.lower()+".esa-maap.org/s3/generateListPresignedUrls"
             params={'bucketName': 'bmap-catalogue-data', 'objectKey': destination, 'nbParts': finalPart, 'uploadId': uploadId}
             response = requests.get(url, params = params, headers = {'Authorization': 'Bearer '+token})
 
             stringList = response.text
             str1 = stringList.replace(']','').replace('[','')
-            listPresignedUrl  = str1.replace('"','').split(",")    
-            
+            listPresignedUrl  = str1.replace('"','').split(",")
+
             #Get the json uploaded list
-            
+
             #we iterate over the data and repush
-            with open(sourceFile, 'rb') as f:    
+            with open(sourceFile, 'rb') as f:
                 i = 0
                 presignedUrlIndex = 0
                 while i < nbParts:
-                    
+
                     file_data = f.read(max_size)
                     #We upload only if we have new nn uploaded part
                     if i > len(partsUpploaded):
-                        
+
                         print("Upload part "+ str(i))
                         headers={'Content-Length': str(max_size)}
                         #print(listPresignedUrl[i])
                         response = requests.put(listPresignedUrl[presignedUrlIndex], data=file_data, headers=headers)
                         #print(response.headers)
                         #print(response.text)
-                        etag = response.headers['ETag']  
-                        partsUpploaded.append({'eTag': etag, 'partNumber': int(i+1)})                        
+                        etag = response.headers['ETag']
+                        partsUpploaded.append({'eTag': etag, 'partNumber': int(i+1)})
                         presignedUrlIndex = presignedUrlIndex + 1
                         #We save also the multipart
                         #So we can resume it if upload failed
@@ -392,34 +392,34 @@ def resume():
                             'sourceFile': sourceFile,
                             'destination': destination
                         }
-                        
+
                         #add the json in the file
                         with open(USER_LAST_UPLOAD_INFO_FILE_PATH, 'w') as outfile:
                             json.dump(multipartinfo, outfile)
-                    
+
                     #We increase the data
-                    i = i+1  
-              
+                    i = i+1
+
             #complete the multi part
             url = "https://gravitee-gateway."+MAAP_ENV_TYPE.lower()+".esa-maap.org/s3/completeMultiPartUploadRequest"
             params={'bucketName': 'bmap-catalogue-data', 'objectKey': key, 'nbParts': nbParts, 'uploadId': uploadId}
             response = requests.get(url, data=str(parts),  params = params, headers = {'Authorization': 'Bearer '+token})
             #delete the file of multipart info because upload was success
-            os.remove(USER_LAST_UPLOAD_INFO_FILE_PATH) 
-    
+            os.remove(USER_LAST_UPLOAD_INFO_FILE_PATH)
+
     else:
         print("[INFO] Please run upload. There are no upload to be resume")
-        
-    
-    
-    
+
+
+
+
 
 ###################
 # Delete the data #
 ####################
 def delete(destination):
     print("[INFO] Destination file is : ", destination)
-    
+
     if destination:
         print("[INFO] Get an existing or fresh token")
         #Generate or get a token
@@ -428,22 +428,22 @@ def delete(destination):
             userinfo = json.load(json_file)
             #Get the info
             token=userinfo['token']
-            
+
         #call the api to delete the data
         #Get the presigned url to delete the data
         url = "http://gravitee-gateway."+MAAP_ENV_TYPE.lower()+".esa-maap.org/s3/"+destination
         print(url)
-        response = requests.delete(url, headers = {'Authorization': 'Bearer '+token}, allow_redirects=False)    
-        
+        response = requests.delete(url, headers = {'Authorization': 'Bearer '+token}, allow_redirects=False)
+
         location = response.headers['Location']
-        
-        #We have the 
+
+        #We have the
         if location:
             #We delete the data using the location
             print("[INFO] we are about to delete")
             response = requests.delete(location)
             print(response)
-        
+
     else:
         display_help()
 
@@ -460,7 +460,7 @@ def delete_folder(remote_folder):
 
 def download_folder(remote_folder, destination):
     import pathlib
-    
+
     files = list(remote_folder)
     # print(files)
     for file in files:
@@ -472,10 +472,10 @@ def download_folder(remote_folder, destination):
             print("copy:", file, " to:", des)
             pathlib.Path(des).parent.mkdir(parents=True, exist_ok=True)
             download(str(file_path), str(des))
-            
+
 def download(path, name):
     print("[INFO] path file is : ", path)
-    
+
     if path:
         print("[INFO] Get an existing or fresh token")
         #Generate or get a token
@@ -484,7 +484,7 @@ def download(path, name):
             userinfo = json.load(json_file)
             #Get the info
             token=userinfo['token']
-            
+
         #Get the presigned url to download the data
         url = "https://gravitee-gateway."+MAAP_ENV_TYPE.lower()+".esa-maap.org/s3/"+path
 
@@ -492,7 +492,7 @@ def download(path, name):
 
         while attempts < 5:
             try:
-                response = requests.get(url, headers = {'Authorization': 'Bearer '+token}, allow_redirects=False)     
+                response = requests.get(url, headers = {'Authorization': 'Bearer '+token}, allow_redirects=False)
 
                 response.raise_for_status()
                 break
@@ -503,8 +503,8 @@ def download(path, name):
         if response.ok:
             print("Got correct response code!")
             location = response.headers['Location']
-        
-        #We have the 
+
+        #We have the
         if location:
             #We download the data using the location
             print("[INFO] we are about to download the data")
@@ -512,7 +512,7 @@ def download(path, name):
             #response = requests.get(location)
             #open(name, 'wb').write(response.content)
             print("[INFO] Download finished")
-        
+
     else:
         display_help()
 
@@ -520,17 +520,17 @@ def download(path, name):
 
 ##########################
 # download file using url #
-##########################       
+##########################
 def download_file(url, name):
     #local_filename = url.split('/')[-1]
     # NOTE the stream=True parameter below
     with requests.get(url, stream=True) as r:
         r.raise_for_status()
         with open(name, 'wb') as f:
-            for chunk in r.iter_content(chunk_size=8192): 
+            for chunk in r.iter_content(chunk_size=8192):
                 # If you have chunk encoded response uncomment if
                 # and set chunk_size parameter to None.
-                #if chunk: 
+                #if chunk:
                 f.write(chunk)
     return name
 
@@ -540,7 +540,7 @@ def download_file(url, name):
 ##########################
 def list(path):
     print("[INFO]: Start finding data in path : "+path)
-    
+
     if path:
         print("[INFO] Get an existing or fresh token")
         #Generate or get a token
@@ -549,15 +549,15 @@ def list(path):
             userinfo = json.load(json_file)
             #Get the info
             token=userinfo['token']
-            
+
         #call the api to delete the data
         #Get the presigned url to delete the data
 
         url = "https://gravitee-gateway."+MAAP_ENV_TYPE.lower()+".esa-maap.org/s3/"+path+"?list=true"
 
-        response = requests.get(url, headers = {'Authorization': 'Bearer '+token}, allow_redirects=False)     
-        print("[INFO] Result list:")  
-        if(response.text):            
+        response = requests.get(url, headers = {'Authorization': 'Bearer '+token}, allow_redirects=False)
+        print("[INFO] Result list:")
+        if(response.text):
             # print(response.text)
             return re.split('\\n', response.text.rstrip())
         else:
@@ -569,7 +569,7 @@ def list(path):
 argv = sys.argv[1:]
 # Initialize result variable
 result=0
- 
+
 try:
 
     if len(argv) == 0:
@@ -581,13 +581,13 @@ try:
             refresh()
         elif argv[0] == 'upload':
             # Upload a data
-            if len(argv) != 3:          
+            if len(argv) != 3:
                 display_help()
             else:
                 upload(argv[1], argv[2])
         elif argv[0] == 'upload_folder':
             # Upload a data
-            if len(argv) != 3:          
+            if len(argv) != 3:
                 display_help()
             else:
                 upload_folder(argv[1], argv[2])
@@ -614,19 +614,19 @@ try:
             if len(argv) != 3:
                 display_help()
             else:
-                login(argv[1], argv[2])    
+                login(argv[1], argv[2])
         elif argv[0] == 'download':
             # Download a data
             if len(argv) != 3:
                 display_help()
             else:
-                download(argv[1], argv[2])  
+                download(argv[1], argv[2])
         elif argv[0] == 'download_folder':
             # Download a data
             if len(argv) != 3:
                 display_help()
             else:
-                download_folder(argv[1], argv[2])  
+                download_folder(argv[1], argv[2])
         elif argv[0] == 'list':
             # list a folder
             if len(argv) != 2:
@@ -635,7 +635,7 @@ try:
                 list(argv[1])
         elif argv[0] == 'help':
             display_help()
-        else:  
+        else:
             display_help()
 
 
@@ -644,6 +644,6 @@ except getopt.GetoptError:
 
   # Print the error message if the wrong option is provided
   print('The wrong option is provided. Please run -h')
- 
+
   # Terminate the script
   sys.exit(2)
