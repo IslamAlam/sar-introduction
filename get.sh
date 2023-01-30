@@ -995,6 +995,10 @@ download_polinsar_files_4th()
 		# mkdir -p $DATA_FOLDER/03-insar
 		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/04-polinsar $DATA_FOLDER/04-polinsar
 	fi
+
+	# For PolInSAR 8th Week
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_01_30_MAAP_PolInSAR_PolInSAR_Part2.ipynb
+
 	# mkdir -p $DATA_FOLDER/04-polinsar
 	# # cd $DATA_FOLDER/04-polinsar
 	# # gdown https://drive.google.com/uc?id=1muO7YkEpwN0JOlzXq4qk3byLQBQj2vgh
