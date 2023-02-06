@@ -1008,7 +1008,7 @@ download_polinsar_files_4th()
 
 	if [[ ! -d $DATA_FOLDER/05-tomosar/ ]]; then
 		# mkdir -p $DATA_FOLDER/03-insar
-		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/05-tomosar $DATA_FOLDER/05-tomosar
+		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/05-tomosar/ $DATA_FOLDER/05-tomosar/
 	fi
 
 	# mkdir -p $DATA_FOLDER/05-tomosar
