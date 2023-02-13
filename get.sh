@@ -1004,7 +1004,7 @@ download_polinsar_files_4th()
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_02_06_MAAP_PolInSAR_TomoSAR_Part1.ipynb
 
 	# # For TomoSAR 10th Week
-	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202205-notebooks/2022_07_04_MAAP_PolInSAR_TomoSAR_Part2.ipynb
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_02_13_MAAP_PolInSAR_TomoSAR_Part2.ipynb
 
 	if [[ ! -d $DATA_FOLDER/05-tomosar/ ]]; then
 		# mkdir -p $DATA_FOLDER/03-insar
