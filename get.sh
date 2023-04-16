@@ -1116,7 +1116,7 @@ download_polinsar_files_5th()
 	rm -rf $main_path/src/maap-s3.py
 	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
 
-	python /projects/src/maap-s3.py login dlr37@esa-maap.org vHJg8jmnvrutKkM > /dev/null || true
+	python /projects/src/maap-s3.py login dlr01@esa-maap.org vHJg8jmnvrutKkM > /dev/null || true
 
 	# Link data folder from S3 Bucket to /projects folder
 	# ln -sf /projects/s3-drive/user-data/polinsar/data /projects/data
