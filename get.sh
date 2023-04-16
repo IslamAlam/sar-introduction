@@ -1093,6 +1093,143 @@ download_polinsar_files_4th()
 
 }
 
+download_polinsar_files_5th()
+{
+	echo  $'\nThe 5th edition of the DLR/ESA open PolInSAR training course\n'
+
+	#trap 'echo -e "Aborted, error $? in command: $BASH_COMMAND"; trap ERR; return 1' ERR
+	filemanager_os="unsupported"
+	filemanager_arch="unknown"
+	main_path="/projects"
+	
+	DATA_FOLDER=/projects/data
+	mkdir -p $DATA_FOLDER
+	# pip install gdown >/dev/null
+	
+	cd $main_path
+	
+
+	echo "Downloading Files"
+	
+	# For src ste_io
+	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py
+	rm -rf $main_path/src/maap-s3.py
+	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
+
+	python /projects/src/maap-s3.py login dlr37@esa-maap.org vHJg8jmnvrutKkM > /dev/null || true
+
+	# Link data folder from S3 Bucket to /projects folder
+	# ln -sf /projects/s3-drive/user-data/polinsar/data /projects/data
+    mkdir -p /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/01-sar/ /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/02-polsar/ /projects/data
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/03-insar/ /projects/data
+	# 3. Check if ~/bin/script is a symlink.
+	# if [[ -L "/projects/s3-drive/user-data/polinsar/data/03-insar/" ]]; then
+	# 	rm /projects/data/03-insar
+	# fi
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/04-polinsar/ /projects/data
+	# rm /projects/data/04-polinsar 2> /dev/null || true
+	# rm /projects/data/05-tomosar 2> /dev/null || true
+
+    # ln -sf /projects/s3-drive/user-data/polinsar/data/05-tomosar/ /projects/data
+	
+	
+	#########################
+	# Download IPython Book #
+	#########################
+	
+	# For IPython Intro
+	if [[ ! -d $main_path/cookbook-2nd-code ]]; then
+		echo "Downloading Intro Book for IPython "Cookbook" "
+		git clone https://github.com/ipython-books/cookbook-2nd-code.git
+	fi
+
+	# For SAR notebooks
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_11_21_MAAP_PolInSAR_SAR_Part1.ipynb 
+	rm $main_path/2022_11_18_MAAP_PolInSAR_SAR_Part1.ipynb 2> /dev/null || true
+	# For SAR 1st Week
+	mkdir -p $DATA_FOLDER/01-sar
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal1_rc.npy
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal2_rc.npy
+
+	# For SAR 1st week Solution
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal1_ac.npy
+	wget_file $DATA_FOLDER/01-sar https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/data/01-sar/signal2_ac.npy
+
+	# Raw data SAR
+	if [[ ! -f $DATA_FOLDER/01-sar/raw-img.rat ]]; then
+		echo "01-sar: raw-data downloading"
+		gdown_file $DATA_FOLDER/01-sar/raw-img.rat 1Fue1i8IxZC3tKbg-Ax9q8B413Ggm832n
+	fi
+    if [[ ! -f $DATA_FOLDER/01-sar/raw-img.rat ]]; then
+		echo "01-sar: raw-data downloading"
+		cp /projects/s3-drive/user-data/polinsar/data/01-sar/raw-img.rat $DATA_FOLDER/01-sar/raw-img.rat
+	fi
+
+	# # Notebook 2nd Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_11_28_MAAP_PolInSAR_SAR_Part2.ipynb
+
+    # # Data for 3rd week
+    # # ln -sf /projects/s3-drive/user-data/polinsar/data/02-polsar/ /projects/data
+
+	# # For PolSAR
+	# if [[ ! -f $DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat ]]; then
+	# 	# echo "Remove old dir and download new dataset"
+	# 	# rm -r $DATA_FOLDER/02-polsar
+	# 	gdown https://drive.google.com/uc?id=1nWkhr0tg3G69kiPzGI5YLIuAVT28r8BI
+
+	# 	python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/02-polsar $DATA_FOLDER/02-polsar
+	# fi
+
+	
+	# # # For PolSAR 3rd Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_12_05_MAAP_PolInSAR_PolSAR_Part1.ipynb
+	
+	# # For PolSAR 4th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_12_12_MAAP_PolInSAR_PolSAR_Part2.ipynb
+
+	# # # For InSAR 5th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_01_09_MAAP_PolInSAR_InSAR_Part1.ipynb
+
+	# # # Data for 5th & 6th Week
+	# if [[ ! -d $DATA_FOLDER/03-insar/ ]]; then
+	# 	# mkdir -p $DATA_FOLDER/03-insar
+	# 	python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/03-insar $DATA_FOLDER/03-insar
+	# fi
+
+
+	# # # For PolSAR 6th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_01_16_MAAP_PolInSAR_InSAR_Part2.ipynb
+
+	# # # For PolInSAR 7th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_01_23_MAAP_PolInSAR_PolInSAR_Part1.ipynb
+	# # # Data for 5th & 6th Week
+	# if [[ ! -d $DATA_FOLDER/04-polinsar/ ]]; then
+	# 	# mkdir -p $DATA_FOLDER/03-insar
+	# 	python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/04-polinsar $DATA_FOLDER/04-polinsar
+	# fi
+
+	# # For PolInSAR 8th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_01_30_MAAP_PolInSAR_PolInSAR_Part2.ipynb
+
+	
+	# # # For TomoSAR 9th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_02_06_MAAP_PolInSAR_TomoSAR_Part1.ipynb
+
+	# # # For TomoSAR 10th Week
+	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_02_13_MAAP_PolInSAR_TomoSAR_Part2.ipynb
+
+	# if [[ ! -d $DATA_FOLDER/05-tomosar/ ]]; then
+	# 	# mkdir -p $DATA_FOLDER/03-insar
+	# 	python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/05-tomosar/ $DATA_FOLDER/05-tomosar/
+	# fi
+
+	
+	cd $main_path
+
+}
+
 if [[ $CHE_WORKSPACE_NAME == *"us"* ]]; then
     echo "US Course!"
     version="US"
@@ -1101,6 +1238,10 @@ elif [[ $CHE_WORKSPACE_NAME == *"polinsar-4"* ]]; then
     echo "PolInSAR Course 4th 2022-11!"
     version="Pol InSAR Course 4th 2022"
     download_polinsar_files_4th
+elif [[ $CHE_WORKSPACE_NAME == *"polinsar-5"* ]]; then
+    echo "PolInSAR Course 5th!"
+    version="Pol InSAR Course 5th"
+    download_polinsar_files_5th
 elif [[ $CHE_WORKSPACE_NAME == *"polinsar"* ]]; then
     echo "PolInSAR Course 2022!"
     version="Pol InSAR Course 2022"
