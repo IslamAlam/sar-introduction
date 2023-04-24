@@ -1163,7 +1163,7 @@ download_polinsar_files_5th()
 	fi
 
 	# # Notebook 2nd Week
-	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_11_28_MAAP_PolInSAR_SAR_Part2.ipynb
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_04_24_MAAP_PolInSAR_SAR_Part2.ipynb
 
     # # Data for 3rd week
     # # ln -sf /projects/s3-drive/user-data/polinsar/data/02-polsar/ /projects/data
