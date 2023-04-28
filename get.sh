@@ -1169,17 +1169,16 @@ download_polinsar_files_5th()
     # # ln -sf /projects/s3-drive/user-data/polinsar/data/02-polsar/ /projects/data
 
 	# # For PolSAR
-	# if [[ ! -f $DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat ]]; then
-	# 	# echo "Remove old dir and download new dataset"
-	# 	# rm -r $DATA_FOLDER/02-polsar
-	# 	gdown https://drive.google.com/uc?id=1nWkhr0tg3G69kiPzGI5YLIuAVT28r8BI
+	if [[ ! -f $DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat ]]; then
+		# echo "Remove old dir and download new dataset"
+		# rm -r $DATA_FOLDER/02-polsar
 
-	# 	python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/02-polsar $DATA_FOLDER/02-polsar
-	# fi
+		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/02-polsar $DATA_FOLDER/02-polsar
+	fi
 
 	
 	# # # For PolSAR 3rd Week
-	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_12_05_MAAP_PolInSAR_PolSAR_Part1.ipynb
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_05_01_MAAP_PolInSAR_PolSAR_Part1_text.ipynb
 	
 	# # For PolSAR 4th Week
 	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_12_12_MAAP_PolInSAR_PolSAR_Part2.ipynb
