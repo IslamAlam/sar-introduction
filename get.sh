@@ -1181,7 +1181,7 @@ download_polinsar_files_5th()
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_05_01_MAAP_PolInSAR_PolSAR_Part1_text.ipynb
 	
 	# # For PolSAR 4th Week
-	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2022_12_12_MAAP_PolInSAR_PolSAR_Part2.ipynb
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_05_07_MAAP_PolInSAR_PolSAR_Part2.ipynb
 
 	# # # For InSAR 5th Week
 	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_01_09_MAAP_PolInSAR_InSAR_Part1.ipynb
