@@ -1197,7 +1197,7 @@ download_polinsar_files_5th()
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_05_22_MAAP_PolInSAR_InSAR_Part2.ipynb
 
 	# # # For PolInSAR 7th Week
-	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_01_23_MAAP_PolInSAR_PolInSAR_Part1.ipynb
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_05_29_MAAP_PolInSAR_PolInSAR_Part1.ipynb
 	# # Data for 7th & 8th Week
 	if [[ ! -d $DATA_FOLDER/04-polinsar/ ]]; then
 		# mkdir -p $DATA_FOLDER/03-insar
