@@ -1198,13 +1198,14 @@ download_polinsar_files_5th()
 
 	# # # For PolInSAR 7th Week
 	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_05_29_MAAP_PolInSAR_PolInSAR_Part1.ipynb
-    wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/01_boundary_core.png
-	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/02_core_geom_5.png
-	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/03_polar_decomp.PNG
-	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/04_PolInSAR_matrices.png
-	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/05_pre-whitening_2.PNG
-	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/06_core_geom_3.png
-	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/07_polar_decomp_eq.PNG
+    mkdir -p $main_path/img
+    wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/01_boundary_core.png
+	wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/02_core_geom_5.png
+	wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/03_polar_decomp.PNG
+	wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/04_PolInSAR_matrices.png
+	wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/05_pre-whitening_2.PNG
+	wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/06_core_geom_3.png
+	wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/07_polar_decomp_eq.PNG
 
 	# # Data for 7th & 8th Week
 	if [[ ! -d $DATA_FOLDER/04-polinsar/ ]]; then
