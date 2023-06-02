@@ -1214,7 +1214,7 @@ download_polinsar_files_5th()
 	fi
 
 	# # For PolInSAR 8th Week
-	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_01_30_MAAP_PolInSAR_PolInSAR_Part2.ipynb
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_06_05_MAAP_PolInSAR_PolInSAR_Part2.ipynb
 
 	
 	# # # For TomoSAR 9th Week
