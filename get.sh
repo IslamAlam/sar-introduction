@@ -1235,6 +1235,41 @@ download_polinsar_files_5th()
 
 }
 
+download_esa_polinsar_training_files_2023()
+{
+	echo  $'\nThe 5th edition of the DLR/ESA open PolInSAR training course\n'
+
+	#trap 'echo -e "Aborted, error $? in command: $BASH_COMMAND"; trap ERR; return 1' ERR
+	filemanager_os="unsupported"
+	filemanager_arch="unknown"
+	main_path="/projects"
+	
+	DATA_FOLDER=/projects/data
+	mkdir -p $DATA_FOLDER
+	# pip install gdown >/dev/null
+	
+	cd $main_path
+	
+
+	echo "Downloading Files"
+	
+	# For src ste_io
+	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py
+	rm -rf $main_path/src/maap-s3.py
+	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
+
+	python /projects/src/maap-s3.py login dlr01@esa-maap.org vHJg8jmnvrutKkM > /dev/null || true
+
+	# Link data folder from S3 Bucket to /projects folder
+    mkdir -p /projects/data
+   
+	
+	cd $main_path
+
+}
+
+
+
 if [[ $CHE_WORKSPACE_NAME == *"polinsar-2023"* ]]; then
     echo "ESA PolInSAR Training 2023!"
     version="ESA PolInSAR Training 2023"
