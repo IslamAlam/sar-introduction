@@ -1233,7 +1233,11 @@ download_polinsar_files_5th()
 
 }
 
-if [[ $CHE_WORKSPACE_NAME == *"us"* ]]; then
+if [[ $CHE_WORKSPACE_NAME == *"polinsar-2023"* ]]; then
+    echo "ESA PolInSAR Training 2023!"
+    version="ESA PolInSAR Training 2023"
+    download_esa_polinsar_training_files_2023
+elif [[ $CHE_WORKSPACE_NAME == *"us"* ]]; then
     echo "US Course!"
     version="US"
     download_us_files
