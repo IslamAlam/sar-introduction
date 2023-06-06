@@ -1237,7 +1237,7 @@ download_polinsar_files_5th()
 
 download_esa_polinsar_training_files_2023()
 {
-	echo  $'\nThe 5th edition of the DLR/ESA open PolInSAR training course\n'
+	echo  $'\nThe 7th ESA Advanced Course on Radar Polarimetry\n'
 
 	#trap 'echo -e "Aborted, error $? in command: $BASH_COMMAND"; trap ERR; return 1' ERR
 	filemanager_os="unsupported"
@@ -1245,7 +1245,10 @@ download_esa_polinsar_training_files_2023()
 	main_path="/projects"
 	
 	DATA_FOLDER=/projects/data
-	mkdir -p $DATA_FOLDER
+	mkdir -p $DATA_FOLDER/applications
+    mkdir -p $DATA_FOLDER/polinsar
+    mkdir -p $DATA_FOLDER/polsar
+    mkdir -p $DATA_FOLDER/tomosar
 	# pip install gdown >/dev/null
 	
 	cd $main_path
@@ -1259,9 +1262,15 @@ download_esa_polinsar_training_files_2023()
 	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
 
 	python /projects/src/maap-s3.py login dlr01@esa-maap.org vHJg8jmnvrutKkM > /dev/null || true
+    # python /projects/src/maap-s3.py upload_folder /projects/data/applications maap-scientific-data/shared/esa-polinsar-2023/applications/
+    # python /projects/src/maap-s3.py upload_folder /projects/data/ maap-scientific-data/shared/esa-polinsar-2023/
+    # python /projects/src/maap-s3.py upload /projects/PolSAR_Change_SAOCOM_solutions.ipynb maap-scientific-data/shared/esa-polinsar-2023/PolSAR_Change_SAOCOM_solutions.ipynb
+    # python /projects/src/maap-s3.py upload_folder /projects/data/ maap-scientific-data/shared/esa-polinsar-2023-7th/
+    # python /projects/src/maap-s3.py upload /projects/PolSAR_Change_SAOCOM_solutions.ipynb maap-scientific-data/shared/esa-polinsar-2023-7th/PolSAR_Change_SAOCOM_solutions.ipynb
 
-	# Link data folder from S3 Bucket to /projects folder
-    mkdir -p /projects/data
+
+    python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/esa-polinsar-2023/applications $DATA_FOLDER/applications/SAOCOM_Geocoded_subset
+
    
 	
 	cd $main_path
