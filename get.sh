@@ -1206,6 +1206,8 @@ download_polinsar_files_5th()
 	wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/05_pre-whitening_2.PNG
 	wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/06_core_geom_3.png
 	wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/07_polar_decomp_eq.PNG
+    wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/08_ground_phase_eq.png
+    wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/09_volume_coherence_model_eq.png
 
 	# # Data for 7th & 8th Week
 	if [[ ! -d $DATA_FOLDER/04-polinsar/ ]]; then
