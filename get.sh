@@ -1270,6 +1270,7 @@ download_esa_polinsar_training_files_2023()
 
 
     python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/esa-polinsar-2023/applications $DATA_FOLDER/applications/SAOCOM_Geocoded_subset
+    python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/esa-polinsar-2023-7th/polsar/ALOS-P1_1__A-ORBIT__ALPSRP202350750 $DATA_FOLDER/polsar/ALOS-P1_1__A-ORBIT__ALPSRP202350750
 
    
 	
