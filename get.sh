@@ -1247,8 +1247,8 @@ download_esa_polinsar_training_files_2023()
 	DATA_FOLDER=/projects/data
 	mkdir -p $DATA_FOLDER/applications
     mkdir -p $DATA_FOLDER/polinsar
-    mkdir -p $DATA_FOLDER/polsar
-    mkdir -p $DATA_FOLDER/tomosar
+    # mkdir -p $DATA_FOLDER/polsar
+    # mkdir -p $DATA_FOLDER/tomosar
 	# pip install gdown >/dev/null
 	
 	cd $main_path
@@ -1272,6 +1272,10 @@ download_esa_polinsar_training_files_2023()
     python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/esa-polinsar-2023/applications $DATA_FOLDER/applications/SAOCOM_Geocoded_subset
     python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/esa-polinsar-2023-7th/polsar/ALOS-P1_1__A-ORBIT__ALPSRP202350750 $DATA_FOLDER/polsar/ALOS-P1_1__A-ORBIT__ALPSRP202350750
 
+	if [[ ! -d $DATA_FOLDER/05-tomosar/ ]]; then
+		# mkdir -p $DATA_FOLDER/03-insar
+		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/05-tomosar/ $DATA_FOLDER/05-tomosar/
+	fi
    
 	
 	cd $main_path
