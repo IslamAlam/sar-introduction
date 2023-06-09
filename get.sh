@@ -1246,7 +1246,7 @@ download_esa_polinsar_training_files_2023()
 	
 	DATA_FOLDER=/projects/data
 	mkdir -p $DATA_FOLDER/applications
-    mkdir -p $DATA_FOLDER/polinsar
+    # mkdir -p $DATA_FOLDER/polinsar
     # mkdir -p $DATA_FOLDER/polsar
     # mkdir -p $DATA_FOLDER/tomosar
 	# pip install gdown >/dev/null
@@ -1255,7 +1255,12 @@ download_esa_polinsar_training_files_2023()
 	
 
 	echo "Downloading Files"
-	
+		# For IPython Intro
+	if [[ ! -d $main_path/cookbook-2nd-code ]]; then
+		echo "Downloading Intro Book for IPython "Cookbook" "
+		git clone https://github.com/ipython-books/cookbook-2nd-code.git
+	fi
+
 	# For src ste_io
 	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/ste_io.py
 	rm -rf $main_path/src/maap-s3.py
@@ -1277,7 +1282,12 @@ download_esa_polinsar_training_files_2023()
 		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/05-tomosar/ $DATA_FOLDER/05-tomosar/
 	fi
    
-	
+	# # Data for 5th & 6th Week
+	if [[ ! -d $DATA_FOLDER/04-polinsar/ ]]; then
+		# mkdir -p $DATA_FOLDER/03-insar
+		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/04-polinsar $DATA_FOLDER/04-polinsar
+	fi
+
 	cd $main_path
 
 }
