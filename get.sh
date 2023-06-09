@@ -1273,9 +1273,20 @@ download_esa_polinsar_training_files_2023()
     # python /projects/src/maap-s3.py upload_folder /projects/data/ maap-scientific-data/shared/esa-polinsar-2023-7th/
     # python /projects/src/maap-s3.py upload /projects/PolSAR_Change_SAOCOM_solutions.ipynb maap-scientific-data/shared/esa-polinsar-2023-7th/PolSAR_Change_SAOCOM_solutions.ipynb
 
+	if [[ ! -d $DATA_FOLDER/applications/SAOCOM_Geocoded_subset/ ]]; then
 
-    python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/esa-polinsar-2023/applications $DATA_FOLDER/applications/SAOCOM_Geocoded_subset
-    python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/esa-polinsar-2023-7th/polsar/ALOS-P1_1__A-ORBIT__ALPSRP202350750 $DATA_FOLDER/polsar/ALOS-P1_1__A-ORBIT__ALPSRP202350750
+        python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/esa-polinsar-2023-7th/applications/SAOCOM_Geocoded_subset/ $DATA_FOLDER/applications/SAOCOM_Geocoded_subset/
+    fi
+
+    
+    if [[ ! -d $DATA_FOLDER/applications/TSX_data_Aletsch/ ]]; then
+
+        python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/esa-polinsar-2023-7th/applications/TSX_data_Aletsch/ $DATA_FOLDER/applications/TSX_data_Aletsch/
+    fi
+
+	if [[ ! -d $DATA_FOLDER/polsar/ALOS-P1_1__A-ORBIT__ALPSRP202350750/ ]]; then
+        python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/esa-polinsar-2023-7th/polsar/ALOS-P1_1__A-ORBIT__ALPSRP202350750 $DATA_FOLDER/polsar/ALOS-P1_1__A-ORBIT__ALPSRP202350750
+	fi
 
 	if [[ ! -d $DATA_FOLDER/05-tomosar/ ]]; then
 		# mkdir -p $DATA_FOLDER/03-insar
