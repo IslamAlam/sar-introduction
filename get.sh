@@ -1293,10 +1293,21 @@ download_esa_polinsar_training_files_2023()
 		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/05-tomosar/ $DATA_FOLDER/05-tomosar/
 	fi
    
-	# # Data for 5th & 6th Week
 	if [[ ! -d $DATA_FOLDER/04-polinsar/ ]]; then
+		rm -rf $DATA_FOLDER/04-polinsar
+	fi
+	if [[ ! -d $DATA_FOLDER/tomosar ]]; then
+		rm -rf $DATA_FOLDER/tomosar
+	fi
+	if [[ ! -d $DATA_FOLDER/polinsar ]]; then
+		rm -rf $DATA_FOLDER/polinsar
+	fi
+
+
+	# # Data for 5th & 6th Week
+	if [[ ! -d $DATA_FOLDER/03-insar/ ]]; then
 		# mkdir -p $DATA_FOLDER/03-insar
-		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/04-polinsar $DATA_FOLDER/04-polinsar
+		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/03-insar $DATA_FOLDER/03-insar
 	fi
 
 	cd $main_path
