@@ -1220,16 +1220,15 @@ download_polinsar_files_5th()
 
 	
 	# # # For TomoSAR 9th Week
-	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_02_06_MAAP_PolInSAR_TomoSAR_Part1.ipynb
+	wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_06_26_MAAP_PolInSAR_TomoSAR_Part1.ipynb
 
 	# # # For TomoSAR 10th Week
 	# wget_file $main_path https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/202211-notebooks/2023_02_13_MAAP_PolInSAR_TomoSAR_Part2.ipynb
 
-	# if [[ ! -d $DATA_FOLDER/05-tomosar/ ]]; then
-	# 	# mkdir -p $DATA_FOLDER/03-insar
-	# 	python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/05-tomosar/ $DATA_FOLDER/05-tomosar/
-	# fi
-
+	if [[ ! -d $DATA_FOLDER/05-tomosar/ ]]; then
+		# mkdir -p $DATA_FOLDER/03-insar
+		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/05-tomosar/ $DATA_FOLDER/05-tomosar/
+	fi
 	
 	cd $main_path
 
