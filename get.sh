@@ -1235,7 +1235,7 @@ download_polinsar_files_5th()
 }
 
 download_polinsar_files_6th() {
-    echo $'\nThe 5th edition of the DLR/ESA open PolInSAR training course\n'
+    echo $'\nThe 6th edition of the DLR/ESA open PolInSAR training course\n'
 
     main_path="/projects"
     DATA_FOLDER="/projects/data"
