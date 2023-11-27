@@ -1275,7 +1275,7 @@ download_polinsar_files_6th() {
     fi
 
     # Download Notebook for 2nd Week
-    # wget_file "$main_path" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_04_24_MAAP_PolInSAR_SAR_Part2.ipynb"
+    # wget_file "$main_path" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/2023_11_27_MAAP_PolInSAR_SAR_Part2.ipynb"
 
     # Download PolSAR data for 3rd Week
     # if [[ ! -f "$DATA_FOLDER/02-polsar/slc_16afrisr0107_Phh_tcal_test.rat" ]]; then
