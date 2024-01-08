@@ -1297,7 +1297,7 @@ download_polinsar_files_6th() {
     fi
 
     # Download PolSAR Notebook for 6th Week
-    # wget_file "$main_path" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_05_22_MAAP_PolInSAR_InSAR_Part2.ipynb"
+    wget_file "$main_path" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/2024_01_08_MAAP_PolInSAR_InSAR_Part2.ipynb"
 
     # Download PolInSAR Notebook for 7th Week
     # wget_file "$main_path" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_05_29_MAAP_PolInSAR_PolInSAR_Part1.ipynb"
