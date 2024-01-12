@@ -1306,10 +1306,10 @@ download_polinsar_files_6th() {
     #     wget_file "$main_path/img" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/0${i}_*.png"
     # done
 
-    # Download Data for 7th & 8th Week
-    # if [[ ! -d "$DATA_FOLDER/04-polinsar/" ]]; then
-    #     python "$main_path/src/maap-s3.py" download_folder maap-scientific-data/shared/polinsar/data/04-polinsar "$DATA_FOLDER/04-polinsar"
-    # fi
+    Download Data for 7th & 8th Week
+    if [[ ! -d "$DATA_FOLDER/04-polinsar/" ]]; then
+        python "$main_path/src/maap-s3.py" download_folder maap-scientific-data/shared/polinsar/data/04-polinsar "$DATA_FOLDER/04-polinsar"
+    fi
 
     # Download PolInSAR Notebook for 8th Week
     # wget_file "$main_path" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_06_05_MAAP_PolInSAR_PolInSAR_Part2.ipynb"
