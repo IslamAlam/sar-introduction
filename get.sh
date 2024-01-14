@@ -1300,7 +1300,7 @@ download_polinsar_files_6th() {
     wget_file "$main_path" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/2024_01_08_MAAP_PolInSAR_InSAR_Part2.ipynb"
 
     # Download PolInSAR Notebook for 7th Week
-    # wget_file "$main_path" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/2023_05_29_MAAP_PolInSAR_PolInSAR_Part1.ipynb"
+    wget_file "$main_path" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/2024_01_15_MAAP_PolInSAR_PolInSAR_Part1.ipynb"
     # mkdir -p "$main_path/img"
     # for i in {1..9}; do
     #     wget_file "$main_path/img" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/0${i}_*.png"
