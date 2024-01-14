@@ -1303,8 +1303,18 @@ download_polinsar_files_6th() {
     wget_file "$main_path" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/2024_01_15_MAAP_PolInSAR_PolInSAR_Part1.ipynb"
     # mkdir -p "$main_path/img"
     # for i in {1..9}; do
-    #     wget_file "$main_path/img" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-5/img/0${i}_*.png"
+    #     wget_file "$main_path/img" "https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/0${i}_*.png"
     # done
+    mkdir -p $main_path/img
+    wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/01_boundary_core.png
+	wget_file $main_path/img https://raw.gith6busercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/02_core_geom_5.png
+	wget_file $main_path/img https://raw.gith6busercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/03_polar_decomp.PNG
+	wget_file $main_path/img https://raw.gith6busercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/04_PolInSAR_matrices.png
+	wget_file $main_path/img https://raw.gith6busercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/05_pre-whitening_2.PNG
+	wget_file $main_path/img https://raw.gith6busercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/06_core_geom_3.png
+	wget_file $main_path/img https://raw.gith6busercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/07_polar_decomp_eq.PNG
+    wget_file $main_path/img https://raw.gith6busercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/08_ground_phase_eq.png
+    wget_file $main_path/img https://raw.gith6busercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/09_volume_coherence_model_eq.png
 
     Download Data for 7th & 8th Week
     if [[ ! -d "$DATA_FOLDER/04-polinsar/" ]]; then
