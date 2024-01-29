@@ -1316,7 +1316,7 @@ download_polinsar_files_6th() {
     wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/08_ground_phase_eq.png
     wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/09_volume_coherence_model_eq.png
 
-    Download Data for 7th & 8th Week
+    # Download Data for 7th & 8th Week
     if [[ ! -d "$DATA_FOLDER/04-polinsar/" ]]; then
         python "$main_path/src/maap-s3.py" download_folder maap-scientific-data/shared/polinsar/data/04-polinsar "$DATA_FOLDER/04-polinsar"
     fi
@@ -1332,7 +1332,7 @@ download_polinsar_files_6th() {
 
     # Download Data for 10th Week
 	if [[ ! -d $DATA_FOLDER/05-tomosar/ ]]; then
-		python /projects/src/maap-s3.py download_folder maap-scientific-data/shared/polinsar/data/05-tomosar/ $DATA_FOLDER/05-tomosar/
+		python "$main_path/src/maap-s3.py" download_folder maap-scientific-data/shared/polinsar/data/05-tomosar "$DATA_FOLDER/05-tomosar/"
 	fi
 
     cd "$main_path"
