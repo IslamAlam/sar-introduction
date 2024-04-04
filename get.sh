@@ -1440,7 +1440,7 @@ elif [[ $CHE_WORKSPACE_NAME == *"polinsar-6"* ]]; then
     echo "PolInSAR Course 6th!"
     version="Pol InSAR Course 6th"
     download_polinsar_files_6th
-elif [[ $CHE_WORKSPACE_NAME == *"polinsar"* ]]; then
+elif [[ $CHE_WORKSPACE_NAME == *"polinsar--"* ]]; then
     echo "PolInSAR Course 2022!"
     version="Pol InSAR Course 2022"
     download_polinsar_files_2022
