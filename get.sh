@@ -1448,6 +1448,7 @@ elif [[ $CHE_WORKSPACE_NAME == *"polinsar--"* ]]; then
 #     version="EU"
 #     echo "EU Course!"
 #     download_files
+    pip install --quiet --no-cache-dir pysarpro pooch -U
 fi
 
 

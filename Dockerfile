@@ -1,6 +1,6 @@
 # FROM kosted/saar-training-jupyterlab:0.0.3
 # FROM imansour/maap-esa-jupyterlab:0.0.14
-ARG ROOT_CONTAINER=ubuntu:focal
+ARG ROOT_CONTAINER=ubuntu:jammy
 
 FROM $ROOT_CONTAINER
 
@@ -14,6 +14,8 @@ RUN apt-get update --yes && \
     #   the ubuntu base image is rebuilt too seldom sometimes (less than once a month)
     apt-get upgrade --yes && \
     apt-get install --yes --no-install-recommends \
+    # - bzip2 is necessary to extract the micromamba executable.
+    bzip2 \
     ca-certificates \
     fonts-liberation \
     locales \
@@ -65,40 +67,43 @@ RUN sed -i 's/^#force_color_prompt=yes/force_color_prompt=yes/' /etc/skel/.bashr
    echo 'eval "$(command conda shell.bash hook 2> /dev/null)"' >> /etc/skel/.bashrc
 
 
-ARG PYTHON_VERSION=default
+ARG PYTHON_VERSION=3.11
 
-# Install conda as jovyan and check the sha256 sum provided on the download site
+# Download and install Micromamba, and initialize the Conda prefix.
+#   <https://github.com/mamba-org/mamba#micromamba>
+#   Similar projects using Micromamba:
+#     - Micromamba-Docker: <https://github.com/mamba-org/micromamba-docker>
+#     - repo2docker: <https://github.com/jupyterhub/repo2docker>
+# Install Python, Mamba, and jupyter_core
+# Cleanup temporary files and remove Micromamba
+# Correct permissions
+# Do all this in a single RUN command to avoid duplicating all of the
+# files across image layers when the permissions change
+COPY initial-condarc "${CONDA_DIR}/.condarc"
 WORKDIR /tmp
-
-# CONDA_MIRROR is a mirror prefix to speed up downloading
-# For example, people from mainland China could set it as
-# https://mirrors.tuna.tsinghua.edu.cn/github-release/conda-forge/miniforge/LatestRelease
-ARG CONDA_MIRROR=https://github.com/conda-forge/miniforge/releases/latest/download
-
-# ---- Miniforge installer ----
-# Check https://github.com/conda-forge/miniforge/releases
-# Package Manager and Python implementation to use (https://github.com/conda-forge/miniforge)
-# We're using Mambaforge installer, possible options:
-# - conda only: either Miniforge3 to use Python or Miniforge-pypy3 to use PyPy
-# - conda + mamba: either Mambaforge to use Python or Mambaforge-pypy3 to use PyPy
-# Installation: conda, mamba, pip
 RUN set -x && \
-    # Miniforge installer
-    miniforge_arch=$(uname -m) && \
-    miniforge_installer="Mambaforge-Linux-${miniforge_arch}.sh" && \
-    wget --quiet "${CONDA_MIRROR}/${miniforge_installer}" && \
-    /bin/bash "${miniforge_installer}" -f -b -p "${CONDA_DIR}" && \
-    rm "${miniforge_installer}" && \
-    # Conda configuration see https://conda.io/projects/conda/en/latest/configuration.html
-    conda config --system --set auto_update_conda false && \
-    conda config --system --set show_channel_urls true && \
-    if [[ "${PYTHON_VERSION}" != "default" ]]; then mamba install --quiet --yes python="${PYTHON_VERSION}"; fi && \
+    arch=$(uname -m) && \
+    if [ "${arch}" = "x86_64" ]; then \
+        # Should be simpler, see <https://github.com/mamba-org/mamba/issues/1437>
+        arch="64"; \
+    fi && \
+    # https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html#linux-and-macos
+    wget --progress=dot:giga -O - \
+        "https://micro.mamba.pm/api/micromamba/linux-${arch}/latest" | tar -xvj bin/micromamba && \
+    PYTHON_SPECIFIER="python=${PYTHON_VERSION}" && \
+    if [[ "${PYTHON_VERSION}" == "default" ]]; then PYTHON_SPECIFIER="python"; fi && \
+    # Install the packages
+    ./bin/micromamba install \
+        --root-prefix="${CONDA_DIR}" \
+        --prefix="${CONDA_DIR}" \
+        --yes \
+        "${PYTHON_SPECIFIER}" \
+        'mamba' \
+        'jupyter_core' && \
+    rm -rf /tmp/bin/ && \
     # Pin major.minor version of python
-    mamba list python | grep '^python ' | tr -s ' ' | cut -d ' ' -f 1,2 >> "${CONDA_DIR}/conda-meta/pinned" && \
-    # Install conda-build
-    mamba install --quiet --yes conda-build && \
-    # Using conda to update all packages: https://github.com/mamba-org/mamba/issues/1092
-    mamba update --all --quiet --yes && \
+    # https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#preventing-packages-from-updating-pinning
+    mamba list --full-name 'python' | tail -1 | tr -s ' ' | cut -d ' ' -f 1,2 | sed 's/\.[^.]*$/.*/' >> "${CONDA_DIR}/conda-meta/pinned" && \
     mamba clean --all -f -y && \
     rm -rf "/home/${NB_USER}/.cache/yarn" 
 
@@ -113,7 +118,7 @@ RUN mamba install --quiet --yes \
     'notebook' \
     'jupyterhub' \
     'jupyterlab' \
-    'nodejs=16.14.*' && \
+    'nodejs=20.*' && \
     mamba clean --all -f -y && \
     npm cache clean --force && \
     jupyter notebook --generate-config && \
@@ -159,125 +164,100 @@ RUN apt-get update --yes && \
     clean-layer
 
 
-RUN  \
-    # Install Jupyter Notebook, Lab, and Hub
-    # Generate a notebook server config
-    # Cleanup temporary files
-    # Correct permissions
-    # Do all this in a single RUN command to avoid duplicating all of the
-    # files across image layers when the permissions change  --quiet
-    # $CONDA_DIR/bin/conda create -f --yes -n $ENV_NAME \
-    mamba install -c conda-forge --name base --quiet --yes  \
+RUN \ 
+    mamba install --quiet --yes \
         'altair' \
+        'astropy' \
         'beautifulsoup4' \
         'bokeh' \
         'bottleneck' \
+        'bqplot' \
+        'cartopy' \
         'cloudpickle' \
-        'conda-forge::blas=*=openblas' \
+        'cmake' \
         'cython' \
+        'dask-geopandas' \
+        'dask-labextension' \
+        'dask-sql' \
         'dask' \
         'dill' \
+        'entwine' \
+        'eoreader' \
+        'evidently' \
+        'fiona' \
+        'gdal' \
+        'geopandas' \
+        'h5netcdf' \
         'h5py' \
+        'ipycytoscape' \
+        'ipyleaflet'  \
+        'ipyleaflet' \
+        'ipympl' \
         'ipympl'\
+        'ipyparallel' \
         'ipywidgets' \
+        'isce2' \
+        'isce3' \
+        'jupyter-lsp-python' \
+        'jupyter-lsp-r' \
+        'jupyter-lsp' \
+        'jupyterhub' \
+        'jupyterlab_code_formatter' \
+        'jupyterlab-drawio' \
+        'jupyterlab-git' \
+        'jupyterlab-lsp' \
+        'jupyterlab-system-monitor' \
+        'jupyterlab' \
+        'jupytext' \
+        'leafmap' \
         'matplotlib-base' \
+        'nbclient' \
+        'nbdime' \
+        'nbformat' \
+        'nbqa' \
+        'netcdf4' \
+        'nikola' \
+        'notebook' \
         'numba' \
         'numexpr' \
+        'pandas-profiling' \
         'pandas' \
+        'panel' \
         'patsy' \
+        'pdal' \
+        'pdal' \
         'protobuf' \
+        'pygmt' \
+        'pyproj' \
+        'pyroSAR' \
         'pytables' \
+        'python-lsp-server' \
+        'python-pdal' \
+        'pythreejs' \
+        'r-languageserver' \
+        'rasterio' \
+        'richdem' \
+        'rioxarray' \
         'scikit-image' \
         'scikit-learn' \
-        'scikit-learn-intelex' \
         'scipy' \
         'seaborn' \
+        'shapely' \
         'sqlalchemy' \
         'statsmodels' \
         'sympy' \
-        'widgetsnbextension'\
-        'xlrd' \
-        'cmake' \
-        'pdal' \
-        'python-pdal' \
-        'entwine' \
-        'ipyleaflet'  \
-        'gdal' \
-        'pdal' \
-        'pyproj' \
-        'richdem' \
-        'rasterio' \
-        'xarray' \
-        'zarr' \
-        'rioxarray' \
-        'netcdf4' \
-        'h5netcdf' \
-        'astropy' \
-        'pyroSAR' \
-        'pygmt' \
-        'geopandas' \
-        'cartopy' \
-        'isce2' \
-        'isce3' \
-        'dask-geopandas' \
-        'eoreader' \
-        'fiona' \
-        'shapely' \
-        'leafmap' \
-        'leafmaptools' && \
-    # npm cache clean --force
-    #jupyter notebook --generate-config
-    # source $CONDA_DIR/bin/activate && \
-    echo  "$(which python)" && \
-    clean-layer
-
-
-RUN \ 
-    mamba install --quiet --yes \
-        'notebook' \
-        'jupyterhub' \
-        'jupyterlab' \
-        'jupyterlab-git' \
-        'jupyterlab_code_formatter' \
-        'bqplot' \
-        'pandas-profiling' \
-        'panel' \
-        'ipyleaflet' \
-        'ipympl' \
-        'pythreejs' \
-        'ipycytoscape' \
-        'evidently' \
-        'jupytext' \
         'voila' \
-        'nikola' \
-        'nbdime' \
-        'ipyparallel' \
-        'nbformat' \
-        'fastai::nbdev' \
-        'nbclient' \
-        'nbqa' \
-        'dask-sql' \
-        'dask-labextension' \
-        'jupyterlab-drawio' \
-        'jupyterlab-system-monitor' \
-        'jupyterlab-lsp' \
-        'jupyter-lsp' \
-        'jupyter-lsp-python' \
-        'jupyter-lsp-r' \
-        'python-lsp-server' \
-        'r-languageserver' && \
+        'widgetsnbextension'\
+        'xarray' \
+        'xlrd' \
+        'zarr' \
+  && \
     clean-layer
 
 
 RUN \
     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
-    jupyter labextension install \
-        @jupyterlab/mathjax3-extension \
-        @jupyterlab/geojson-extension \
-        @jupyterlab/katex-extension \
-        @jupyterlab/fasta-extension \
-        @jupyterlab/latex && \
-    pip install --quiet --no-cache-dir jupyterlab-novnc && \
+    pip install --no-cache-dir jupyterlab-novnc jupyterlab-mathjax3 jupyterlab-geojson jupyterlab-katex jupyterlab-fasta jupyterlab-latex && \
     # jupyter lab build -y --dev-build=False --minimize=False && \
     jupyter lab clean -y && \
     npm cache clean --force && \
@@ -331,9 +311,9 @@ ENV XDG_CACHE_HOME="${HOME}/.cache/"
 RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" 
 
 
-# Install Tensorflow
-RUN pip install --quiet --no-cache-dir \
-    'tensorflow==2.7' gdown 
+# # Install pysarpro
+# RUN pip install --quiet --no-cache-dir \
+#     pysarpro  
 
 
 
