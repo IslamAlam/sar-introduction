@@ -1444,14 +1444,42 @@ elif [[ $CHE_WORKSPACE_NAME == *"polinsar--"* ]]; then
     echo "PolInSAR Course 2022!"
     version="Pol InSAR Course 2022"
     download_polinsar_files_2022
-# else
+else
 #     version="EU"
 #     echo "EU Course!"
 #     download_files
-    pip install --quiet --no-cache-dir pysarpro pooch -U
+	filemanager_os="unsupported"
+	filemanager_arch="unknown"
+	main_path="/projects"
+	
+	DATA_FOLDER=/projects/data
+	mkdir -p $DATA_FOLDER
+	# pip install gdown >/dev/null
+	
+	cd $main_path
+	
+	
+	#########################
+	# Download IPython Book #
+	#########################
+	
+	# For IPython Intro
+	if [[ ! -d $main_path/cookbook-2nd-code ]]; then
+		echo "Downloading Intro Book for IPython "Cookbook" "
+		git clone https://github.com/ipython-books/cookbook-2nd-code.git
+	fi
+	########################
+	# Download and extract #
+	########################
+	#echo "Downloading File Browser for $filemanager_os/$filemanager_arch..."
+	echo "Downloading Files"
+	
+	# For src ste_io
+	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
+	pip install --quiet --no-cache-dir pysarpro pooch -U
 fi
 
 
 
-echo $'\n\n\n#######################\nMade with ❤️ in Munich & Oberpfaffenhofen! \nIn case of any issue with the data and notebooks contact: \n\t polinsar@imansour.net'
+echo $'\n\n\n#######################\nMade with ❤️ in Munich & Oberpfaffenhofen! \nIn case of any issue with the data and notebooks contact: \n\t Islam Mansour islam.mansour@dlr.de'
 echo $'\nEnjoy your Training 🥳 😊\n'
