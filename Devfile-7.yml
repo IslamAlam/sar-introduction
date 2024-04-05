@@ -25,7 +25,7 @@ components:
               spec:
                containers: 
                 - name: jupyter
-                  image: 'registry.eu-west-0.prod-cloud-ocb.orange-business.com/cloud-biomass-maap/maap-sar-intro:latest'
+                  image: 'quay.io/is3mansour/maap-sar-intro:latest'
                   imagePullPolicy: IfNotPresent
                   envFrom:
                     - configMapRef:
