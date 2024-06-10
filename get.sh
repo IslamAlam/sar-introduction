@@ -1477,6 +1477,24 @@ else
 	# For src ste_io
 	wget_file $main_path/src https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/src/maap-s3.py
 	pip install --quiet --no-cache-dir pysarpro pooch -U
+  echo $'\nThe DLR/ESA open PolInSAR training course\n'
+
+  main_path="/projects"
+  DATA_FOLDER="/projects/data"
+  mkdir -p "$DATA_FOLDER"
+
+  cd "$main_path"
+
+  mkdir -p $main_path/img
+  wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/01_boundary_core.png
+  wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/02_core_geom_5.png
+  wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/03_polar_decomp.PNG
+  wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/04_PolInSAR_matrices.png
+  wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/05_pre-whitening_2.PNG
+  wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/06_core_geom_3.png
+  wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/07_polar_decomp_eq.PNG
+  wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/08_ground_phase_eq.png
+  wget_file $main_path/img https://raw.githubusercontent.com/IslamAlam/sar-introduction/main/polinsar-6/img/09_volume_coherence_model_eq.png
 fi
 
 
