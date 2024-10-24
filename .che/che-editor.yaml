@@ -1,0 +1,36 @@
+inline:
+  schemaVersion: 2.2.2
+  metadata:
+      name: polinsar-7-test
+      displayName: MAAP PolInSAR Jupyter Lab IDE
+      description: polinsar 7test
+      icon: /images/notebook.svg
+      attributes:
+        publisher: islamalam
+        version: 1.0.0
+        title: Jupyter Lab polinsar for MAAP
+        repository: 'https://github.com/IslamAlam/sar-introduction'
+        firstPublicationDate: '2024-10-16'
+  components:
+    - name: jupyter-ide
+      container:
+        image: quay.io/is3mansour/maap-sar-intro:0.1.0
+        env:
+          - name: JUPYTER_NOTEBOOK_DIR
+            value: /projects
+          - name: CONDA_ENVS_PATH
+            value: /projects/envs
+        mountSources: true
+        memoryLimit: 15Gi
+        imagePullPolicy: IfNotPresent
+        endpoints:
+          - name: jupyter
+            targetPort: 3100
+            exposure: public
+            protocol: https
+            secure: true
+            attributes:
+              type: main
+        attributes:
+          ports:
+            - exposedPort: 3100

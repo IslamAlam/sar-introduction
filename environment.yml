@@ -1,8 +1,6 @@
 name: sar-intro
 channels:
   - conda-forge
-  - anaconda
-  - defaults
 dependencies:
   - python
   - pip
@@ -98,6 +96,7 @@ dependencies:
   - ipympl
   - ipywidgets
   - matplotlib-base
+  - numpy<2
   - numba
   - numexpr
   - pandas

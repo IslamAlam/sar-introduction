@@ -1,0 +1,514 @@
+# FROM kosted/saar-training-jupyterlab:0.0.3
+# FROM imansour/maap-esa-jupyterlab:0.0.14
+ARG ROOT_CONTAINER=registry.access.redhat.com/ubi9/ubi-init
+
+FROM $ROOT_CONTAINER
+
+
+LABEL maintainer="Red Hat, Inc."
+
+LABEL com.redhat.component="ubi9-init"
+LABEL name="ubi9/ubi9-init"
+LABEL version="9.4"
+LABEL modifide="2024-10-24"
+LABEL modified_by="Islam Mansour"
+
+#label for EULA
+LABEL com.redhat.license_terms="https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
+
+#labels for container catalog
+LABEL summary="Provides the latest release of the Red Hat Universal Base Image 9 Init for multi-service containers."
+LABEL description="The Universal Base Image Init is designed is designed to run an init system as PID 1 for running multi-services inside a container. This base image is freely redistributable, but Red Hat only supports Red Hat technologies through subscriptions for Red Hat products. This image is maintained by Red Hat and updated regularly."
+LABEL io.k8s.display-name="Red Hat Universal Base Image 9 Init"
+LABEL io.openshift.expose-services=""
+
+ENV container oci
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+
+# ===============================Custom Start=========================================================================
+USER 0
+
+# dnf config-manager isn't available at first, and
+# we need it to install the CRB repo below.
+RUN dnf -y install 'dnf-command(config-manager)'
+
+# What used to be powertools is now called "CRB".
+# We need it for some of the packages installed below.
+# https://docs.fedoraproject.org/en-US/epel/
+# RUN dnf config-manager --set-enabled crb
+RUN dnf -y install \
+    https://dl.fedoraproject.org/pub/epel/epel-release-latest-$(rpm -E %rhel).noarch.rpm \
+    https://dl.fedoraproject.org/pub/epel/epel-next-release-latest-$(rpm -E %rhel).noarch.rpm
+RUN dnf config-manager --enable epel,epel-next
+RUN dnf install -y https://download1.rpmfusion.org/free/el/rpmfusion-free-release-9.noarch.rpm
+RUN dnf install -y https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-9.noarch.rpm
+
+# The --nobest flag is hopefully temporary. Without it we currently hit
+# package versioning conflicts around OpenSSL.
+RUN dnf update -y \
+    && dnf -y --nobest install \
+    bash \
+    diffutils \
+    git \
+    git-lfs \
+    iproute \
+    jq \
+    less \
+    lsof \
+    man \
+    nano \
+    procps \
+    p7zip \
+    p7zip-plugins \
+    perl-Digest-SHA \
+    net-tools \
+    openssh-clients \
+    rsync \
+    socat \
+    sudo \
+    time \
+    vim \
+    wget \
+    zip \
+    stow \
+    zlib-devel \
+    mediainfo \
+    pandoc \
+    gfortran \
+    gcc \
+    bzip2 \
+    tini \
+  && dnf clean all && rm -rf /var/cache/dnf
+
+
+# Configure environment
+ENV CONDA_DIR=/opt/conda \
+    SHELL=/bin/bash \
+    LC_ALL=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US.UTF-8
+ENV PATH="${CONDA_DIR}/bin:${PATH}" \
+    HOME=/root
+
+ENV NB_USER=jovyan
+ENV NB_UID=1234
+ENV HOME=/home/${NB_USER}
+
+RUN \
+    # add user and configure it
+    useradd -u 1234 -G wheel,root -d ${HOME} --shell /bin/bash -m ${NB_USER} && \
+    mkdir -p ${HOME} && \
+    cp -rT /etc/skel ${HOME} && \
+    # Setup $PS1 for a consistent and reasonable prompt
+    touch /etc/profile.d/udi_prompt.sh && \
+    chown 1234 /etc/profile.d/udi_prompt.sh && \
+    echo "export PS1='\W \`git branch --show-current 2>/dev/null | sed -r -e \"s@^(.+)@\(\1\) @\"\`$ '" >> /etc/profile.d/udi_prompt.sh && \
+    # Copy the global git configuration to user config as global /etc/gitconfig
+    # file may be overwritten by a mounted file at runtime
+    cp /etc/gitconfig ${HOME}/.gitconfig && \
+    chown 1234 ${HOME}/ ${HOME}/.gitconfig  && \
+    # Set permissions on /etc/passwd and /home to allow arbitrary users to write
+    chgrp -R 0 /home && \
+    chmod -R g=u /etc/passwd /etc/group /home
+
+ENV ENV_NAME=base
+
+
+# Layer cleanup script
+# Make clean-layer and fix-permissions executable
+COPY resources/scripts/fix-permissions.sh /usr/local/bin/
+RUN chmod a+rx /usr/local/bin/fix-permissions.sh \
+    && ln -s /usr/local/bin/fix-permissions.sh /usr/local/bin/fix-permissions
+    
+COPY resources/scripts/clean-layer.sh /usr/local/bin/
+RUN chmod a+rx /usr/local/bin/clean-layer.sh \
+    && ln -s /usr/local/bin/clean-layer.sh /usr/local/bin/clean-layer
+
+
+# Enable prompt color in the skeleton .bashrc before creating the default NB_USER
+# hadolint ignore=SC2016
+RUN sed -i 's/^#force_color_prompt=yes/force_color_prompt=yes/' /etc/skel/.bashrc && \
+   # Add call to conda init script see https://stackoverflow.com/a/58081608/4413446
+   echo 'eval "$(command conda shell.bash hook 2> /dev/null)"' >> /etc/skel/.bashrc
+
+
+ARG PYTHON_VERSION=3.11
+
+# Download and install Micromamba, and initialize the Conda prefix.
+#   <https://github.com/mamba-org/mamba#micromamba>
+#   Similar projects using Micromamba:
+#     - Micromamba-Docker: <https://github.com/mamba-org/micromamba-docker>
+#     - repo2docker: <https://github.com/jupyterhub/repo2docker>
+# Install Python, Mamba, and jupyter_core
+# Cleanup temporary files and remove Micromamba
+# Correct permissions
+# Do all this in a single RUN command to avoid duplicating all of the
+# files across image layers when the permissions change
+COPY initial-condarc "${CONDA_DIR}/.condarc"
+WORKDIR /tmp
+RUN set -x && \
+    arch=$(uname -m) && \
+    if [ "${arch}" = "x86_64" ]; then \
+        # Should be simpler, see <https://github.com/mamba-org/mamba/issues/1437>
+        arch="64"; \
+    fi && \
+    # https://mamba.readthedocs.io/en/latest/installation/micromamba-installation.html#linux-and-macos
+    wget --progress=dot:giga -O - \
+        "https://micro.mamba.pm/api/micromamba/linux-${arch}/latest" | tar -xvj bin/micromamba && \
+    PYTHON_SPECIFIER="python=${PYTHON_VERSION}" && \
+    if [[ "${PYTHON_VERSION}" == "default" ]]; then PYTHON_SPECIFIER="python"; fi && \
+    # Install the packages
+    ./bin/micromamba install \
+        --root-prefix="${CONDA_DIR}" \
+        --prefix="${CONDA_DIR}" \
+        --yes \
+        "${PYTHON_SPECIFIER}" \
+        'mamba' \
+        'jupyter_core' && \
+    rm -rf /tmp/bin/ && \
+    # Pin major.minor version of python
+    # https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#preventing-packages-from-updating-pinning
+    mamba list --full-name 'python' | tail -1 | tr -s ' ' | cut -d ' ' -f 1,2 | sed 's/\.[^.]*$/.*/' >> "${CONDA_DIR}/conda-meta/pinned" && \
+    mamba clean --all -f -y && \
+    rm -rf "/home/${NB_USER}/.cache/yarn" 
+
+
+# Install Jupyter Notebook, Lab, and Hub
+# Generate a notebook server config
+# Cleanup temporary files
+# Correct permissions
+# Do all this in a single RUN command to avoid duplicating all of the
+# files across image layers when the permissions change
+RUN mamba install --quiet --yes \
+    'notebook' \
+    'jupyterhub' \
+    'jupyterlab' \
+    'nodejs=20.*' && \
+    mamba clean --all -f -y && \
+    npm cache clean --force && \
+    jupyter notebook --generate-config && \
+    jupyter lab clean && \
+    clean-layer 
+
+RUN dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -y && \
+    dnf install -y python3-pip && \
+    dnf clean all 
+
+RUN \ 
+    mamba install --quiet --yes \
+        'altair' \
+        'astropy' \
+        'beautifulsoup4' \
+        'bokeh' \
+        'bottleneck' \
+        'bqplot' \
+        'cartopy' \
+        'cloudpickle' \
+        'cmake' \
+        'cython' \
+        'dask-geopandas' \
+        'dask-labextension' \
+        'dask-sql' \
+        'dask' \
+        'dill' \
+        'entwine' \
+        'eoreader' \
+        'evidently' \
+        'fiona' \
+        'gdal' \
+        'geopandas' \
+        'h5netcdf' \
+        'h5py' \
+        'ipycytoscape' \
+        'ipyleaflet'  \
+        'ipyleaflet' \
+        'ipympl' \
+        'ipympl'\
+        'ipyparallel' \
+        'ipywidgets' \
+        'isce2' \
+        'isce3' \
+        'jupyter-lsp-python' \
+        'jupyter-lsp-r' \
+        'jupyter-lsp' \
+        'jupyterhub' \
+        'jupyterlab_code_formatter' \
+        'jupyterlab-drawio' \
+        'jupyterlab-git' \
+        'jupyterlab-lsp' \
+        'jupyterlab-system-monitor' \
+        'jupyterlab' \
+        'jupytext' \
+        'leafmap' \
+        'matplotlib-base' \
+        'nbclient' \
+        'nbdime' \
+        'nbformat' \
+        'nbqa' \
+        'netcdf4' \
+        'nikola' \
+        'notebook' \
+        'numba' \
+        'numexpr' \
+        'numpy<2' \
+        'pandas-profiling' \
+        'pandas' \
+        'panel' \
+        'patsy' \
+        'pdal' \
+        'pdal' \
+        'protobuf' \
+        'pygmt' \
+        'pyproj' \
+        'pyroSAR' \
+        'pytables' \
+        'python-lsp-server' \
+        'python-pdal' \
+        'pythreejs' \
+        'r-languageserver' \
+        'rasterio' \
+        'richdem' \
+        'rioxarray' \
+        'scikit-image' \
+        'scikit-learn' \
+        'scipy' \
+        'seaborn' \
+        'shapely' \
+        'sqlalchemy' \
+        'statsmodels' \
+        'sympy' \
+        'voila' \
+        'widgetsnbextension'\
+        'xarray' \
+        'xlrd' \
+        'zarr' \
+  && \
+    clean-layer
+
+
+RUN \
+    jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
+    pip install --no-cache-dir jupyterlab-novnc jupyterlab-mathjax3 jupyterlab-geojson jupyterlab-katex jupyterlab-fasta jupyterlab-latex && \
+    # jupyter lab build -y --dev-build=False --minimize=False && \
+    jupyter lab clean -y && \
+    npm cache clean --force && \
+    clean-layer
+
+# RUN \
+#     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \
+#     lab_ext_install='jupyter labextension install --no-build '  && \
+#     lab_ext_build='jupyter lab build '  && \
+#     # Also activate ipywidgets extension for JupyterLab
+#     # Check this URL for most recent compatibilities
+#     # https://github.com/jupyter-widgets/ipywidgets/tree/master/packages/jupyterlab-manager
+#     eval $lab_ext_install \
+#         jupyter-matplotlib \
+#         @jupyter-widgets/jupyterlab-manager \
+#         @bokeh/jupyter_bokeh \
+#         @jupyterlab/debugger \
+#         plotlywidget \
+#         dask-labextension \
+#         jupyterlab-chart-editor \
+#         @jupyterlab/translation \
+#         @jupyterlab/translation-extension \
+#         @jupyterlab/hdf5 \
+#         @jupyterlab/geojson-extension \
+#         @jupyterlab/latex \
+#         @jupyterlab/fasta-extension \
+#         @jupyterlab/geojson-extension \
+#         @jupyterlab/katex-extension \
+#         @jupyterlab/mathjax3-extension \
+#         @jupyterlab/plugin-playground && \
+#     # jupyter labextension install @jupyter-widgets/jupyterlab-manager --no-build && \
+#     # jupyter labextension install @bokeh/jupyter_bokeh --no-build && \
+#     # jupyter labextension install jupyter-matplotlib --no-build && \
+#     # jupyter lab build -y && \
+#     # jupyter lab clean -y && \
+#     eval $lab_ext_build && \
+#     jupyter lab clean && \
+#     npm cache clean --force && \
+#     clean-layer
+
+
+# Install facets which does not have a pip or conda package at the moment
+WORKDIR /tmp
+RUN git clone https://github.com/PAIR-code/facets.git && \
+    jupyter nbextension install facets/facets-dist/ --sys-prefix && \
+    rm -rf /tmp/facets 
+
+# Import matplotlib the first time to build the font cache.
+ENV XDG_CACHE_HOME="${HOME}/.cache/"
+
+RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot" 
+
+
+# # Install pysarpro
+# RUN pip install --quiet --no-cache-dir \
+#     pysarpro  
+
+
+
+
+WORKDIR /projects
+ENV HOME=/projects
+
+
+#RUN echo ". $CONDA_DIR/etc/profile.d/conda.sh" >> ~/.bashrc && \
+#    echo "conda activate base" >> ~/.bashrc
+
+ADD notebooks /projects/
+ADD rootfs/root /root/
+ADD maap-jupyter-ide/entrypoint.sh /maap-jupyter-ide/entrypoint.sh
+# Overwrite & add Labels
+LABEL \
+    "maintainer"="me@imansour.net" \
+    "author"="Islam Mansour" 
+
+
+#RUN pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version` && \
+
+# We add the script folder and the zip file to be able to unzip the structure of the project
+COPY maap-jupyter-ide/scripts/initTemplate.sh /usr/bmap/initTemplate.sh
+COPY maap-jupyter-ide/scripts/initCredentials.sh /usr/bmap/initCredentials.sh
+COPY maap-jupyter-ide/scripts/Project_template.zip /usr/bmap/Project_template.zip
+COPY maap-jupyter-ide/scripts/shareAlgorithm.sh /usr/bmap/shareAlgorithm.sh
+COPY maap-jupyter-ide/scripts/.gitlab-ci.yml /usr/bmap/.gitlab-ci.yml
+COPY maap-jupyter-ide/scripts/.condarc /usr/bmap/.condarc
+
+# We add the RestClient file
+COPY maap-jupyter-ide/scripts/RestClient.py /usr/bmap/RestClient.py
+COPY maap-jupyter-ide/scripts/quicklook_raster.py /usr/bmap/quicklook_raster.py
+COPY maap-jupyter-ide/scripts/ingestData.py /usr/bmap/ingestData.py
+COPY maap-jupyter-ide/scripts/ingestData.sh /usr/bmap/ingestData.sh
+COPY maap-jupyter-ide/scripts/maap-s3.py /usr/bmap/maap-s3.py
+COPY maap-jupyter-ide/scripts/installLib.sh /usr/bmap/.installLib.sh
+
+RUN chmod a+rwx -R /usr/bmap/
+
+RUN  chmod +x /usr/bmap/initTemplate.sh
+RUN  chmod +x /usr/bmap/shareAlgorithm.sh
+RUN  chmod +x /usr/bmap/ingestData.sh
+RUN  chmod +x /usr/bmap/maap-s3.py
+
+ENV PATH="/usr/bmap/:${PATH}"
+ENV PYTHONPATH="/usr/bmap/:${PYTHONPATH}"
+ENV PATH="/usr/modules/:${PATH}"
+ENV PYTHONPATH="/usr/modules/:${PYTHONPATH}"
+
+#################################
+# END OF ESA CUSTOMISATION
+#################################
+
+
+RUN mkdir /.jupyter
+
+
+    
+
+RUN export PATH="/usr/bmap/:$PATH"
+RUN echo "PATH=/opt/conda/bin:${PATH}:/usr/bmap/" >> /etc/environment
+
+RUN chmod a+rwx -R /maap-jupyter-ide/ && chmod a+rwx -R /.jupyter
+
+ENV SHELL="bash"
+
+WORKDIR /projects
+EXPOSE 3100
+
+ENTRYPOINT ["/bin/bash", "/maap-jupyter-ide/entrypoint.sh"]
+
+# Julia installation
+# Default values can be overridden at build time
+# (ARGS are in lower case to distinguish them from ENV)
+# Check https://julialang.org/downloads/
+ARG julia_version="1.7.2"
+
+# Julia dependencies
+# install Julia packages in /opt/julia instead of ${HOME}
+ENV JULIA_DEPOT_PATH=/opt/julia \
+    JULIA_PKGDIR=/opt/julia \
+    JULIA_VERSION="${julia_version}"
+
+WORKDIR /tmp
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+# hadolint ignore=SC2046
+RUN set -x && \
+    julia_arch=$(uname -m) && \
+    julia_short_arch="${julia_arch}" && \
+    if [ "${julia_short_arch}" == "x86_64" ]; then \
+      julia_short_arch="x64"; \
+    fi; \
+    julia_installer="julia-${JULIA_VERSION}-linux-${julia_arch}.tar.gz" && \
+    julia_major_minor=$(echo "${JULIA_VERSION}" | cut -d. -f 1,2) && \
+    mkdir "/opt/julia-${JULIA_VERSION}" && \
+    wget -q "https://julialang-s3.julialang.org/bin/linux/${julia_short_arch}/${julia_major_minor}/${julia_installer}" && \
+    tar xzf "${julia_installer}" -C "/opt/julia-${JULIA_VERSION}" --strip-components=1 && \
+    rm "${julia_installer}" && \
+    ln -fs /opt/julia-*/bin/julia /usr/local/bin/julia
+
+# Show Julia where conda libraries are \
+RUN mkdir /etc/julia && \
+    echo "push!(Libdl.DL_LOAD_PATH, \"${CONDA_DIR}/lib\")" >> /etc/julia/juliarc.jl
+    
+# R packages including IRKernel which gets installed globally.
+RUN mamba install --quiet --yes \
+    'r-base' \
+    'r-caret' \
+    'r-crayon' \
+    'r-devtools' \
+    'r-e1071' \
+    'r-forecast' \
+    'r-hexbin' \
+    'r-htmltools' \
+    'r-htmlwidgets' \
+    'r-irkernel' \
+    'r-nycflights13' \
+    'r-randomforest' \
+    'r-rcurl' \
+    'r-rmarkdown' \
+    'r-rodbc' \
+    'r-rsqlite' \
+    'r-shiny' \
+    'r-tidyverse' \
+    'rpy2' \
+    'unixodbc' \
+    'r-terra' \
+    'r-rgdal' \
+    && clean-layer
+
+# R Pacakges
+RUN R -e 'install.packages("raster", repos="https://rspatial.r-universe.dev")' \
+    && R -e 'install.packages("fields", repos="http://cran.us.r-project.org")' \
+    && R -e 'install.packages("ncdf4", repos="http://cran.us.r-project.org")' \
+    && R -e 'install.packages("lubridate", repos="http://cran.us.r-project.org")' \
+    && R -e 'install.packages("raster", repos="http://cran.us.r-project.org")' \
+    && R -e 'install.packages("dplyr", repos="http://cran.us.r-project.org")' \
+    && R -e 'install.packages("ggplot2", repos="http://cran.us.r-project.org")' \
+    && R -e 'install.packages("tidyverse", repos="http://cran.us.r-project.org")' \
+    && R -e 'install.packages("randomForest", repos="http://cran.us.r-project.org")'\
+    && R -e 'install.packages("caret", repos="http://cran.us.r-project.org")'\
+    && R -e 'install.packages("reshape2", repos="http://cran.us.r-project.org")'\
+    && R -e 'install.packages("rgdal", repos="http://cran.us.r-project.org")' \
+    && R -e 'pck<-c("tidyr","raster","ggplot2","randomForest", "caret", "reshape2", "rgdal")' \
+    && clean-layer
+
+
+
+# Add Julia packages. Only add HDF5 if this is not a test-only build since
+# it takes roughly half the entire build time of all of the images on Travis
+# to add this one package and often causes Travis to timeout.
+#
+# Install IJulia as jovyan and then move the kernelspec out
+# to the system share location. Avoids problems with runtime UID change not
+# taking effect properly on the .local folder in the jovyan home dir.
+RUN julia -e 'import Pkg; Pkg.update()' && \
+    (test $TEST_ONLY_BUILD || julia -e 'import Pkg; Pkg.add("HDF5")') && \
+    julia -e "using Pkg; pkg\"add IJulia\"; pkg\"precompile\"" && \
+    # move kernelspec out of home \
+    mv "${HOME}/.local/share/jupyter/kernels/julia"* "${CONDA_DIR}/share/jupyter/kernels/" && \
+    chmod -R go+rx "${CONDA_DIR}/share/jupyter" && \
+    rm -rf "${HOME}/.local"
+
+WORKDIR /projects
