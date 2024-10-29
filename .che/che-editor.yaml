@@ -14,7 +14,7 @@ inline:
   components:
     - name: jupyter-ide
       container:
-        image: harbor.ade.esa-maap.org/cache-quay.io/quay.io/is3mansour/maap-sar-intro:latest
+        image: harbor.ade.esa-maap.org/cache-quay.io/is3mansour/maap-sar-intro:latest
         env:
           - name: JUPYTER_NOTEBOOK_DIR
             value: /projects
