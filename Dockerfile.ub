@@ -422,7 +422,7 @@ ENTRYPOINT ["/bin/bash", "/maap-jupyter-ide/entrypoint.sh"]
 # Default values can be overridden at build time
 # (ARGS are in lower case to distinguish them from ENV)
 # Check https://julialang.org/downloads/
-ARG julia_version="1.7.2"
+ARG julia_version="1.11.1"
 
 # Julia dependencies
 # install Julia packages in /opt/julia instead of ${HOME}
@@ -511,4 +511,12 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
     chmod -R go+rx "${CONDA_DIR}/share/jupyter" && \
     rm -rf "${HOME}/.local"
 
+# Install pysarpro
+RUN pip install --quiet --no-cache-dir \
+    pysarpro \
+    && clean-layer
+
+# Add starship prompt
+# RUN curl -sS https://starship.rs/install.sh | sh -s -- -y 
+RUN chown -R 1234:0 /opt ${HOME} /projects
 WORKDIR /projects
